@@ -1,0 +1,44 @@
+{
+  "login": {
+    "username": "Username",
+    "password": "Password",
+    "signin": "Sign in"
+  },
+  "validation": {
+    "required": "Required",
+    "invalidFormat": "Invalid format"
+  },
+  "errors": {
+    "errorOccured": "Something went wrong"
+  },
+  "noData": "No data",
+  "profile": {
+    "editProfile": "Edit profile",
+    "colors": "App theme",
+    "chooseColors": "Choose app theme",
+    "logout": "Log out",
+    "title": "User profile",
+    "firstName": "First name",
+    "lastName": "Last name",
+    "email": "Email"
+  },
+  "close": "close",
+  "done": "Done",
+  "dark": "Dark",
+  "save": "Save",
+  "light": "Light",
+  "retailer": {
+    "info": "Info",
+    "creditCards": "Credit cards",
+    "transactions": "Transactions",
+    "email": "Email",
+    "phone": "Phone",
+    "address": "Address",
+    "joinDate": "Join date"
+  },
+  "transactions": {
+    "active": "Active",
+    "finished": "Finished",
+    "title": "Transactions"
+  }
+}
