@@ -25,7 +25,7 @@ export function creditCardRoutes(server: Server) {
 
     const card = schema.create('creditCard', {
       cv2,
-      lastFourNumbers: cardNumber.slice(cardNumber.length - 4),
+      lastFourDigits: cardNumber.slice(cardNumber.length - 4),
       expires,
       retailer,
     });

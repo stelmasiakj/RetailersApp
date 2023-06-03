@@ -7,6 +7,7 @@ import {
   View,
   useWindowDimensions,
   TextInput as RNTextInput,
+  Platform,
 } from 'react-native';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {useProfile} from '../hooks';
@@ -21,7 +22,7 @@ import {useCallback, useMemo, useRef, useState} from 'react';
 import {updateProfileThunk} from '../store';
 import {useNavigation} from '@react-navigation/native';
 import React from 'react';
-import {AppInputAccessoryView, FormTextField} from '~/components';
+import {AppHeader, AppInputAccessoryView, FormTextField} from '~/components';
 
 const useValidationSchema = () => {
   const [t] = useTranslation();
@@ -49,13 +50,12 @@ export const EditProfileScreen = () => {
     control,
     handleSubmit,
 
-    formState: {errors},
+    formState: {errors, isSubmitting},
   } = useForm<FormState>({
     defaultValues: profile,
     resolver: yupResolver(validationSchema),
     mode: 'onBlur',
   });
-  const [isSubmitting, setIsSubmitting] = useState(false);
   const [height, setHeight] = useState(0);
   const firstNameInput = useRef<RNTextInput>(null);
   const lastNameInput = useRef<RNTextInput>(null);
@@ -65,13 +65,9 @@ export const EditProfileScreen = () => {
   const onSubmit: SubmitHandler<FormState> = useCallback(
     async values => {
       try {
-        setIsSubmitting(true);
         await dispatch(updateProfileThunk(values)).unwrap();
         navigation.goBack();
-      } catch {
-      } finally {
-        setIsSubmitting(false);
-      }
+      } catch {}
     },
     [dispatch, navigation],
   );
@@ -151,6 +147,11 @@ export const EditProfileScreen = () => {
 
   return (
     <View onLayout={onLayout} style={styles.wrapper}>
+      <AppHeader
+        left="close"
+        title={t('profile.editProfile')}
+        includeTopSafeAreaInset={Platform.OS === 'android'}
+      />
       <KeyboardAvoidingView
         behavior="padding"
         style={styles.container}

@@ -3,7 +3,7 @@ import {Retailer} from './retailer';
 export type CreditCard = {
   id: number;
   expires: string;
-  lastFourNumbers: string;
+  lastFourDigits: string;
   cv2: string;
   retailer: Retailer;
 };

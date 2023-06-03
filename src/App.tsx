@@ -24,6 +24,7 @@ import {
 } from 'react-native-paper';
 import {DarkModeContext, IDarkModeContextValues} from './designSystem';
 import {PortalProvider} from '@gorhom/portal';
+import {CustomTabBarTranslateProvider} from './navigationElements';
 
 startMirage();
 
@@ -82,12 +83,14 @@ export const App = () => {
         <PaperProvider settings={{rippleEffectEnabled: true}} theme={theme}>
           <DarkModeContext.Provider value={darkModeContextValue}>
             <SafeAreaProvider>
-              <AppInternal theme={theme} />
-              <StatusBar
-                translucent
-                barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-                backgroundColor="transparent"
-              />
+              <CustomTabBarTranslateProvider>
+                <AppInternal theme={theme} />
+                <StatusBar
+                  translucent
+                  barStyle={isDarkMode ? 'light-content' : 'dark-content'}
+                  backgroundColor="transparent"
+                />
+              </CustomTabBarTranslateProvider>
             </SafeAreaProvider>
           </DarkModeContext.Provider>
         </PaperProvider>

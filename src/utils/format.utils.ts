@@ -28,6 +28,25 @@ export const formatDate = (v: TDateValue) => {
   )}.${year}`;
 };
 
+export const formatTime = (v: TDateValue) => {
+  const date = new Date(v);
+  if (isNaN(date as any)) {
+    return '';
+  }
+
+  const hours = date.getHours(),
+    minutes = date.getMinutes();
+
+  return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(
+    2,
+    '0',
+  )}`;
+};
+
+export const formatDatetime = (v: TDateValue) => {
+  return `${formatDate(v)}/${formatTime(v)}`;
+};
+
 export const formatPhoneNumber = (v: string) => {
   if (!v) {
     return '';

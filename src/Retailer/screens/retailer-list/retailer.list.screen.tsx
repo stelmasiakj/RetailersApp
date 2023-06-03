@@ -21,6 +21,8 @@ import {
   RETAILER_LIST_SECTION_HEIGHT,
 } from '~/Retailer/constants';
 import {getSectionListLayout} from '~/utils';
+import {useCustomTabbarHeight} from '~/navigationElements';
+import Animated, {FadeIn} from 'react-native-reanimated';
 
 export const RetailerListScreen = () => {
   const dispatch = useAppDispatch();
@@ -29,6 +31,7 @@ export const RetailerListScreen = () => {
   const {areAllItemsLoaded, isError, isFetching, items, page} = useRetailers();
   const [t] = useTranslation();
 
+  const tabbarHeight = useCustomTabbarHeight();
   const styles = useStylesheet(
     ({colors, spacing}) => ({
       container: {
@@ -40,13 +43,20 @@ export const RetailerListScreen = () => {
       },
       listContent: {
         padding: spacing[20],
+        paddingBottom: spacing[20] + tabbarHeight,
+        paddingTop: 0,
         minHeight: height,
       },
       separator: {
         height: RETAILER_LIST_ITEM_SEPARATOR,
       },
+      section: {
+        height: RETAILER_LIST_SECTION_HEIGHT,
+        backgroundColor: colors.surface,
+        justifyContent: 'center',
+      },
     }),
-    [height],
+    [height, tabbarHeight],
   );
 
   useEffect(() => {
@@ -124,24 +134,23 @@ export const RetailerListScreen = () => {
       item: RetailerListItem;
       index: number;
       section: {title: string; data: RetailerListItem[]};
-    }) => <RetailerListItemPresenter item={item} />,
+    }) => (
+      <Animated.View entering={FadeIn}>
+        <RetailerListItemPresenter item={item} />
+      </Animated.View>
+    ),
     [],
   );
 
   const renderSectionHeader = useCallback(
     ({section}: {section: {title: string}}) => {
       return (
-        <View
-          style={{
-            height: RETAILER_LIST_SECTION_HEIGHT,
-            backgroundColor: 'green',
-            justifyContent: 'center',
-          }}>
+        <Animated.View entering={FadeIn} style={styles.section}>
           <Text variant="labelMedium">{section.title}</Text>
-        </View>
+        </Animated.View>
       );
     },
-    [],
+    [styles],
   );
 
   const getItemLayout = useMemo(
@@ -169,7 +178,7 @@ export const RetailerListScreen = () => {
         ListFooterComponent={ListFooterComponent}
         refreshControl={refreshControl}
         scrollEventThrottle={16}
-        stickySectionHeadersEnabled
+        stickySectionHeadersEnabled={false}
         onEndReachedThreshold={0.1}
         onEndReached={onEndReached}
         getItemLayout={getItemLayout}

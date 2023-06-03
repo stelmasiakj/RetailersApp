@@ -1,7 +1,14 @@
 import throttle from 'lodash.throttle';
 import {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {FlatList, ListRenderItem, RefreshControl, View} from 'react-native';
+import {
+  FlatList,
+  ListRenderItem,
+  RefreshControl,
+  StyleProp,
+  View,
+  ViewStyle,
+} from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
 import {TransactionListItemPresenter} from '~/Transaction/components';
 import {
@@ -20,6 +27,7 @@ export const TransactionListBase = memo(
     items,
     page = 1,
     loadCallback,
+    contentContainerStyle,
   }: {
     areAllItemsLoaded?: boolean;
     isError: boolean;
@@ -27,6 +35,7 @@ export const TransactionListBase = memo(
     items: TransactionListItem[] | null;
     page?: number;
     loadCallback: (page: number) => Promise<unknown>;
+    contentContainerStyle?: StyleProp<ViewStyle>;
   }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [t] = useTranslation();
@@ -122,7 +131,7 @@ export const TransactionListBase = memo(
       <FlatList
         data={items}
         style={styles.list}
-        contentContainerStyle={styles.listContent}
+        contentContainerStyle={[styles.listContent, contentContainerStyle]}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         ListEmptyComponent={ListEmptyComponent}

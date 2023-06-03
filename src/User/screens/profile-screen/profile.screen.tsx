@@ -6,17 +6,17 @@ import {getProfileThunk} from '../../store';
 import {useDarkModeContext, useStylesheet} from '~/designSystem';
 import {
   ActivityIndicator,
-  Appbar,
   Avatar,
   Divider,
   List,
   Text,
 } from 'react-native-paper';
 import {useProfile} from '../../hooks';
-import {ErrorView} from '~/components';
+import {AppHeader, ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
 import {useNavigation} from '@react-navigation/native';
 import {ChooseAppColorsBottomSheet} from './choose.app.colors.bottom.sheet';
+import {useCustomTabbarHeight} from '~/navigationElements';
 
 export const ProfileScreen = () => {
   const {isError, isFetching, profile} = useProfile();
@@ -45,12 +45,15 @@ export const ProfileScreen = () => {
     dispatch(getProfileThunk());
   }, [dispatch]);
 
+  const tabbarHeight = useCustomTabbarHeight();
+
   const styles = useStylesheet(
     ({colors, spacing}) => ({
       container: {
         flex: 1,
         backgroundColor: colors.background,
         paddingTop: spacing[64],
+        paddingBottom: spacing[20] + tabbarHeight,
       },
       progress: {
         flex: 1,
@@ -87,9 +90,7 @@ export const ProfileScreen = () => {
 
   return (
     <>
-      <Appbar.Header mode="center-aligned" elevated>
-        <Appbar.Content title={t('profile.title')} />
-      </Appbar.Header>
+      <AppHeader title={t('profile.title')} />
       <View style={styles.container}>
         {!profile && isFetching && (
           <View style={styles.progress}>

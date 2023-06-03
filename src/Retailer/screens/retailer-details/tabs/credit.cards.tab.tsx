@@ -5,23 +5,11 @@ import {useRetailerId} from '../use.retailer.id';
 import {useRetailerCreditCards} from '~/Retailer/hooks.ts';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {EmptyView, ErrorView} from '~/components';
-import {ActivityIndicator, List, Divider} from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import React from 'react';
-import {CreditCardListItem} from '~/domain';
 import {getRetailerCreditCardsThunk} from '~/Retailer/store';
-
-const CardItem = memo(
-  ({card, isLast}: {card: CreditCardListItem; isLast: boolean}) => {
-    const left: NonNullable<React.ComponentProps<typeof List.Item>['left']> =
-      useCallback(
-        props => <List.Icon {...props} icon="credit-card-outline" />,
-        [],
-      );
-
-    return <List.Item left={left} title="fdfdf" description={card.expires} />;
-  },
-);
+import {CreditCardItem} from './credit.card.item';
 
 export const CreditCardsTab = memo(() => {
   const styles = useStylesheet(
@@ -82,7 +70,7 @@ export const CreditCardsTab = memo(() => {
       {!!cards && !!cards.length && (
         <>
           {cards.map((card, index, arr) => (
-            <CardItem
+            <CreditCardItem
               key={card.id}
               card={card}
               isLast={index === arr.length - 1}

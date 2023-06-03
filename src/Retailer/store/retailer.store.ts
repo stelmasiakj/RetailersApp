@@ -5,6 +5,7 @@ import {getRetailersThunk} from './get.retailers.thunk';
 import {searchRetailersThunk} from './search.retailers.thunk';
 import {getRetailerCreditCardsThunk} from './get.retailer.credit.cards.thunk';
 import {logoutThunk} from '~/Auth';
+import {deleteCreditCardThunk} from './delete.credit.card.thunk';
 
 type Dict<T> = Record<number, T | undefined>;
 
@@ -186,6 +187,23 @@ const retailerStore = createSlice({
           state.retailerCreditCards[retailerId] = creditCards.map(c => c.id);
         },
       );
+
+    builder.addCase(
+      deleteCreditCardThunk.pending,
+      (
+        state,
+        {
+          meta: {
+            arg: {id, retailerId},
+          },
+        },
+      ) => {
+        state.retailerCreditCards[retailerId] = (
+          state.retailerCreditCards[retailerId] || []
+        ).filter(i => i !== id);
+        delete state.creditCards[id];
+      },
+    );
 
     builder.addCase(logoutThunk.fulfilled, () => ({...initialState}));
   },

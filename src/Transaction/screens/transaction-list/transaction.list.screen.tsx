@@ -1,11 +1,13 @@
 import {useCallback, useMemo, useState} from 'react';
 import {View, useWindowDimensions} from 'react-native';
-import {Appbar} from 'react-native-paper';
 import {useStylesheet} from '~/designSystem';
 import {useTranslation} from 'react-i18next';
 import {TabView} from 'react-native-tab-view';
-import {AppTabBar} from '~/components';
+import {AppHeader, AppTabBar} from '~/components';
 import {TransactionList} from './transaction.list';
+import {Appbar} from 'react-native-paper';
+import {useTransactionsFilter} from '~/Transaction/hooks';
+import {useNavigation} from '@react-navigation/native';
 
 enum TransactionListTab {
   Active = 0,
@@ -15,6 +17,7 @@ enum TransactionListTab {
 export const TransactionListScreen = () => {
   const [t] = useTranslation();
   const [tab, setTab] = useState(TransactionListTab.Active);
+  const filter = useTransactionsFilter();
 
   const styles = useStylesheet(
     ({colors}) => ({
@@ -65,11 +68,23 @@ export const TransactionListScreen = () => {
     return <AppTabBar {...props} />;
   }, []);
 
+  const navigation = useNavigation();
+  const navigateToFilter = useCallback(() => {
+    navigation.navigate('TransactionFilter');
+  }, [navigation]);
+
   return (
     <>
-      <Appbar.Header mode="center-aligned" elevated>
-        <Appbar.Content title={t('transactions.title')} />
-      </Appbar.Header>
+      <AppHeader
+        title={t('transactions.title')}
+        right={
+          <Appbar.Action
+            icon={filter ? 'filter' : 'filter-outline'}
+            onPress={navigateToFilter}
+          />
+        }
+      />
+
       <View style={styles.container}>
         <TabView
           navigationState={navigationState}

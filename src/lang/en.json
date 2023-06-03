@@ -12,6 +12,7 @@
     "errorOccured": "Something went wrong"
   },
   "noData": "No data",
+  "back": "Back",
   "profile": {
     "editProfile": "Edit profile",
     "colors": "App theme",
@@ -23,6 +24,8 @@
     "email": "Email"
   },
   "close": "close",
+  "cancel": "Cancel",
+  "confirm": "Confirm",
   "done": "Done",
   "dark": "Dark",
   "save": "Save",
@@ -34,11 +37,31 @@
     "email": "Email",
     "phone": "Phone",
     "address": "Address",
-    "joinDate": "Join date"
+    "joinDate": "Join date",
+    "detailsTitle": "Retailer details"
   },
   "transactions": {
     "active": "Active",
     "finished": "Finished",
-    "title": "Transactions"
+    "title": "Transactions",
+    "rejected": "Rejected",
+    "pending": "Pending"
+  },
+  "creditCard": {
+    "cardNumber": "Card number",
+    "expiration": "Expiration",
+    "cv2": "CV2",
+    "acceptRegulations1": "I accept",
+    "acceptRegulations2": "regulations",
+    "saveCreditCard": "Save credit card",
+    "3dsTitle": "Sample 3DS View. Click continue to add card",
+    "continue": "continue",
+    "creditCardInitTitle": "Adding credit card",
+    "waitingForCreditCardConfirm": "A check of card is in progress. Please wait",
+    "cardAdded": "Credit card has been added",
+    "cardAddFailure": "Unfortunately it was not possible to add a credit card",
+    "deleteTitle": "Deleting credit card",
+    "deleteQuestion": "Are you sure you want to delete credit card?",
+    "addTitle": "Add credit card"
   }
 }

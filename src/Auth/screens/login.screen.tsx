@@ -36,14 +36,14 @@ export const LoginScreen = () => {
   const {
     control,
     handleSubmit,
-    formState: {errors},
+    formState: {errors, isSubmitting},
   } = useForm<FormState>({
     defaultValues: {password: '', username: ''},
     resolver: yupResolver(validationSchema),
     mode: 'onBlur',
   });
   const [t] = useTranslation();
-  const [isSubmitting, setIsSubmitting] = useState(false);
+
   const [isErrorVisible, setIsErrorVisible] = useState(false);
   const [isPasswordShown, setIsPasswordShown] = useState(false);
   const userNameInput = useRef<RNTextInput>(null);
@@ -60,12 +60,9 @@ export const LoginScreen = () => {
   const onSubmit: SubmitHandler<FormState> = useCallback(
     async values => {
       try {
-        setIsSubmitting(true);
         await dispatch(loginThunk(values)).unwrap();
       } catch {
         setIsErrorVisible(true);
-      } finally {
-        setIsSubmitting(false);
       }
     },
     [dispatch],

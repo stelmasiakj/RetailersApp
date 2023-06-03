@@ -13,13 +13,14 @@ type FormTextFieldProps<T extends FieldValues> = {
   control: Control<T>;
   name: Path<T>;
   errors: FieldErrors<T>;
+  transform?: (v: string) => string;
 } & Omit<
   React.ComponentProps<typeof TextInput>,
   'value' | 'onBlur' | 'onChange' | 'mode'
 >;
 
 const FormTextFieldInner = <T extends FieldValues>(
-  {errors, control, name, ...props}: FormTextFieldProps<T>,
+  {errors, control, name, transform, ...props}: FormTextFieldProps<T>,
   ref: React.ForwardedRef<RNTextInput>,
 ) => {
   const errorMessage = errors[name]?.message as string;
@@ -33,9 +34,10 @@ const FormTextFieldInner = <T extends FieldValues>(
           <TextInput
             ref={ref}
             onBlur={onBlur}
-            onChangeText={onChange}
+            onChangeText={transform ? v => onChange(transform(v)) : onChange}
             value={value}
             mode="outlined"
+            error={!!errorMessage}
             {...props}
           />
           <HelperText type="error" visible>

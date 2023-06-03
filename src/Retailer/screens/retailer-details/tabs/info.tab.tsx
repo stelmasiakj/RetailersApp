@@ -1,11 +1,11 @@
 import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
-import {Pressable, ScrollView, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {useRetailerId} from '../use.retailer.id';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {useRetailerDetails} from '~/Retailer/hooks.ts';
 import {getRetailerDetailsThunk} from '~/Retailer/store';
 import {spacing, useStylesheet} from '~/designSystem';
-import {ActivityIndicator, Card, List, Text} from 'react-native-paper';
+import {ActivityIndicator, Card, List} from 'react-native-paper';
 import {ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
 import {formatAddress, formatDate, formatPhoneNumber} from '~/utils';
@@ -14,7 +14,7 @@ import {RefreshControl} from 'react-native-gesture-handler';
 const Info = memo(
   ({icon, title, value}: {title: string; value: string; icon: string}) => {
     const left: NonNullable<React.ComponentProps<typeof List.Item>['left']> =
-      useCallback(props => <List.Icon {...props} icon={icon} />, []);
+      useCallback(props => <List.Icon {...props} icon={icon} />, [icon]);
 
     return <List.Item left={left} title={title} description={value} />;
   },

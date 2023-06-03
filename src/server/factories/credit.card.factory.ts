@@ -15,7 +15,7 @@ export const creditCardFactory = Factory.extend<Partial<CreditCard>>({
       .toString()
       .substring(2)}`;
   },
-  lastFourNumbers() {
+  lastFourDigits() {
     return faker.string.numeric(4);
   },
 });
