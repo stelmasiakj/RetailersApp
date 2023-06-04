@@ -4,7 +4,6 @@ import {routes} from './routes';
 import {factories} from './factories';
 import {Config} from '~/config';
 import {faker} from '@faker-js/faker';
-import dump from './dump.json';
 
 export function createMirage() {
   const server = createServer({
@@ -14,16 +13,16 @@ export function createMirage() {
     models,
     factories,
     seeds(_server) {
-      // _server.create('user');
-      // for (let i = 0; i < faker.number.int({min: 50, max: 100}); i++) {
-      //   const retailer = _server.create('retailer');
-      //   _server.createList('creditCard', faker.number.int({min: 2, max: 4}), {
-      //     retailer,
-      //   });
-      //   _server.createList('transaction', faker.number.int({min: 1, max: 3}), {
-      //     retailer,
-      //   });
-      // }
+      _server.create('user');
+      for (let i = 0; i < faker.number.int({min: 50, max: 100}); i++) {
+        const retailer = _server.create('retailer');
+        _server.createList('creditCard', faker.number.int({min: 2, max: 4}), {
+          retailer,
+        });
+        _server.createList('transaction', faker.number.int({min: 1, max: 3}), {
+          retailer,
+        });
+      }
     },
     serializers: {
       application: RestSerializer,
@@ -34,8 +33,6 @@ export function createMirage() {
       }
     },
   });
-
-  server.db.loadData(dump);
 
   return server;
 }

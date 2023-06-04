@@ -26,7 +26,7 @@ import {DarkModeContext, IDarkModeContextValues} from './designSystem';
 import {PortalProvider} from '@gorhom/portal';
 import {CustomTabBarTranslateProvider} from './navigationElements';
 
-startMirage();
+//startMirage();
 
 const Screens = ({isSignedIn}: {isSignedIn: boolean}) => {
   useAuthorization();

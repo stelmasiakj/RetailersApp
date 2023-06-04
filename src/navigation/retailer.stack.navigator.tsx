@@ -23,7 +23,11 @@ export const RetailerStackNavigator = () => {
         headerBackTitleVisible: false,
         header: renderCustomHeader,
       }}>
-      <Stack.Screen name="RetailerList" component={RetailerListScreen} />
+      <Stack.Screen
+        name="RetailerList"
+        component={RetailerListScreen}
+        options={{title: '', headerTitle: ''}}
+      />
       <Stack.Screen
         name="RetailerDetails"
         component={RetailerDetailsScreen}

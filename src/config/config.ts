@@ -8,7 +8,6 @@ type TConfig = {
 
 const Config = {
   ...ReactNativeConfig,
-  ...{APP_API_URL: 'https://www.server.com'},
 } as TConfig;
 
 export {Config};

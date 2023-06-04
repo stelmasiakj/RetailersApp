@@ -1,5 +1,5 @@
 import {memo, useCallback, useMemo, useState} from 'react';
-import {StyleSheet, View, useWindowDimensions} from 'react-native';
+import {Alert, StyleSheet, View, useWindowDimensions} from 'react-native';
 import {List, Divider, Dialog, Button, Text} from 'react-native-paper';
 import React from 'react';
 import {CreditCardListItem} from '~/domain';
@@ -67,9 +67,17 @@ export const CreditCardItem = memo(
       try {
         await dispatch(deleteCreditCardThunk({id, retailerId})).unwrap();
       } catch {
+        Alert.alert(t('errors.errorOccured'));
         restoreHiddenTemporarily();
       }
-    }, [dispatch, id, retailerId, restoreHiddenTemporarily, hideDeleteDialog]);
+    }, [
+      dispatch,
+      id,
+      retailerId,
+      restoreHiddenTemporarily,
+      hideDeleteDialog,
+      t,
+    ]);
 
     const onDeleteCancelled = useCallback(() => {
       hideDeleteDialog();

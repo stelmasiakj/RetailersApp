@@ -9,7 +9,8 @@
     "start": "react-native start",
     "test": "jest",
     "e2e:build:ios": "npx detox build --configuration ios.sim.debug",
-    "e2e:test:ios": "npx detox test --configuration ios.sim.debug"
+    "e2e:test:ios": "npx detox test --configuration ios.sim.debug",
+    "e2e:start:fakeserver": "npx ts-node ./e2e/test.fake.server.ts"
   },
   "dependencies": {
     "@faker-js/faker": "^8.0.1",
@@ -54,6 +55,7 @@
     "@babel/runtime": "^7.20.0",
     "@react-native-community/eslint-config": "^3.2.0",
     "@tsconfig/react-native": "^2.0.2",
+    "@types/express": "^4.17.17",
     "@types/jest": "^29.2.1",
     "@types/lodash.throttle": "^4.1.7",
     "@types/qs": "^6.9.7",
@@ -63,6 +65,7 @@
     "babel-plugin-root-import": "^6.6.0",
     "detox": "^20.9.1",
     "eslint": "^8.19.0",
+    "express": "^4.18.2",
     "jest": "^29.2.1",
     "metro-react-native-babel-preset": "0.73.9",
     "prettier": "^2.4.1",

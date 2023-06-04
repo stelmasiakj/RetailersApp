@@ -189,7 +189,7 @@ const retailerStore = createSlice({
       );
 
     builder.addCase(
-      deleteCreditCardThunk.pending,
+      deleteCreditCardThunk.fulfilled,
       (
         state,
         {

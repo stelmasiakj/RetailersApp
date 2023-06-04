@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {by, expect, element, device, waitFor} from 'detox';
+import {by, expect, element} from 'detox';
 
 describe('auth e2e tests', () => {
   it('should sign in', async () => {
@@ -11,8 +11,8 @@ describe('auth e2e tests', () => {
     await element(by.text('Done')).tap();
     await element(by.id('LoginSubmitButton')).tap();
 
-    await waitFor(element(by.id('RetailerListScreenContainer')))
-      .toBeVisible()
-      .withTimeout(10000);
+    await expect(element(by.id('RetailerListScreenContainer'))).toBeVisible();
   });
+
+  it('should logout', async () => {});
 });
