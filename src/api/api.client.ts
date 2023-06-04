@@ -69,12 +69,13 @@ export const apiClient = {
     ).data as {total: number; transactions: TransactionListItem[]};
     return response;
   },
-  searchRetailers: async () => {
+  searchRetailers: async ({search}: {search: string}) => {
     const response = (
       await axiosInstance.get(
         `/api/retailers?${qs.stringify({
           page: 1,
           pagesize: 100,
+          search,
         })}`,
       )
     ).data as {total: number; retailers: Retailer[]};

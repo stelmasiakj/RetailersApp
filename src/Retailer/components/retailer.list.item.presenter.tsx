@@ -1,4 +1,3 @@
-import {useNavigation} from '@react-navigation/native';
 import {memo, useCallback} from 'react';
 import {Pressable, StyleSheet, View} from 'react-native';
 import {RetailerListItem} from '~/domain';
@@ -10,21 +9,17 @@ import {spacing} from '~/designSystem';
 export const RetailerListItemPresenter = memo(
   ({
     item: {firstName, id, lastName, avatar, ...address},
+    onPress,
   }: {
     item: RetailerListItem;
+    onPress: (id: number) => void;
   }) => {
-    const navigation = useNavigation();
-    const navigateToRetailerDetails = useCallback(() => {
-      navigation.navigate('AppTabs', {
-        screen: 'Retailer',
-        params: {screen: 'RetailerDetails', params: {id}},
-      });
-    }, [navigation, id]);
+    const onPressed = useCallback(() => {
+      onPress(id);
+    }, [id, onPress]);
 
     return (
-      <Pressable
-        onPress={navigateToRetailerDetails}
-        style={styles.itemContainer}>
+      <Pressable onPress={onPressed} style={styles.itemContainer}>
         <Avatar.Image source={{uri: avatar}} size={40} />
         <View>
           <Text variant="bodyMedium" numberOfLines={1}>

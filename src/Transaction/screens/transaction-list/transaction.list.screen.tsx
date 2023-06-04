@@ -49,6 +49,8 @@ export const TransactionListScreen = () => {
     }),
     [top],
   );
+  const hasFilter =
+    !!filter.maxStart || !!filter.minStart || !!filter.retailerIds?.length;
 
   const {width: screenWidth} = useWindowDimensions();
   const initialLayout = useMemo(() => ({width: screenWidth}), [screenWidth]);
@@ -80,11 +82,11 @@ export const TransactionListScreen = () => {
   const headerRight = useMemo(
     () => (
       <Appbar.Action
-        icon={filter ? 'filter' : 'filter-outline'}
+        icon={hasFilter ? 'filter' : 'filter-outline'}
         onPress={navigateToFilter}
       />
     ),
-    [filter, navigateToFilter],
+    [hasFilter, navigateToFilter],
   );
 
   const headerTranslateY = useSharedValue(0);

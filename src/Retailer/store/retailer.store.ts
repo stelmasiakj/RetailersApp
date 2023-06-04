@@ -50,7 +50,11 @@ const initialState: IRetailerState = {
 const retailerStore = createSlice({
   name: 'retailer',
   initialState,
-  reducers: {},
+  reducers: {
+    resetSearchedRetailersAction: state => {
+      state.searchedRetailersIds = null;
+    },
+  },
   extraReducers: builder => {
     builder
       .addCase(
@@ -208,5 +212,7 @@ const retailerStore = createSlice({
     builder.addCase(logoutThunk.fulfilled, () => ({...initialState}));
   },
 });
+
+export const {resetSearchedRetailersAction} = retailerStore.actions;
 
 export const retailerReducer = retailerStore.reducer;

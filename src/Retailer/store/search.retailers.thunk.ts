@@ -3,8 +3,8 @@ import {createAppAsyncThunk} from '~/redux/create.app.async.thunk';
 
 export const searchRetailersThunk = createAppAsyncThunk(
   'retailers/searchRetailers',
-  async () => {
-    const response = await apiClient.searchRetailers();
+  async ({search}: {search: string}) => {
+    const response = await apiClient.searchRetailers({search});
 
     return response.retailers;
   },

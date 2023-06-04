@@ -39,7 +39,10 @@
     "phone": "Phone",
     "address": "Address",
     "joinDate": "Join date",
-    "detailsTitle": "Retailer details"
+    "detailsTitle": "Retailer details",
+    "notFound": "No retailers found",
+    "search": "Search for retailer",
+    "pressToSearch": "Press to search retailer"
   },
   "transactions": {
     "active": "Active",

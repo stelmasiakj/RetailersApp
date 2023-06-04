@@ -51,7 +51,3 @@ yarn start
 ```
 yarn ios --simulator "iPhone 14"
 ```
-
-## Download APK for android
-
-APK can be downloaded from [here](https://drive.google.com/drive/folders/1zODG-yue14mi7LhX5A5lgSo2lSLHitWO?usp=sharing)

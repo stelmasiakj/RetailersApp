@@ -14,7 +14,7 @@ import throttle from 'lodash.throttle';
 import {ActivityIndicator, Text} from 'react-native-paper';
 import {EmptyView, ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
-import {RetailerListItemPresenter} from '~/Retailer/components';
+import {RetailerListItemPresenter, RetailerSearch} from '~/Retailer/components';
 import {
   RETAILER_LIST_ITEM_PRESENTER_HEIGHT,
   RETAILER_LIST_ITEM_SEPARATOR,
@@ -30,7 +30,7 @@ import Animated, {
   useAnimatedScrollHandler,
   withTiming,
 } from 'react-native-reanimated';
-import {useIsFocused} from '@react-navigation/native';
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 const RetailersSectionList = SectionList<
   RetailerListItem,
@@ -143,6 +143,17 @@ export const RetailerListScreen = () => {
     [onRefresh, isRefreshing],
   );
 
+  const navigation = useNavigation();
+  const navigateToRetailerDetails = useCallback(
+    (id: number) => {
+      navigation.navigate('AppTabs', {
+        screen: 'Retailer',
+        params: {screen: 'RetailerDetails', params: {id}},
+      });
+    },
+    [navigation],
+  );
+
   const renderItem = useCallback(
     ({
       item,
@@ -152,10 +163,13 @@ export const RetailerListScreen = () => {
       section: {title: string; data: RetailerListItem[]};
     }) => (
       <Animated.View entering={FadeIn}>
-        <RetailerListItemPresenter item={item} />
+        <RetailerListItemPresenter
+          item={item}
+          onPress={navigateToRetailerDetails}
+        />
       </Animated.View>
     ),
-    [],
+    [navigateToRetailerDetails],
   );
 
   const renderSectionHeader = useCallback(
@@ -226,26 +240,29 @@ export const RetailerListScreen = () => {
   }, [isFocused, tabBarTranslateY]);
 
   return (
-    <View style={styles.container} testID="RetailerListScreenContainer">
-      <AnimatedSectionList
-        sections={items || []}
-        style={styles.list}
-        contentContainerStyle={styles.listContent}
-        onLayout={onLayout}
-        renderItem={renderItem}
-        renderSectionHeader={renderSectionHeader}
-        keyExtractor={keyExtractor}
-        ItemSeparatorComponent={ItemSeparator}
-        ListEmptyComponent={ListEmptyComponent}
-        ListFooterComponent={ListFooterComponent}
-        refreshControl={refreshControl}
-        scrollEventThrottle={16}
-        stickySectionHeadersEnabled
-        onEndReachedThreshold={0.1}
-        onEndReached={onEndReached}
-        getItemLayout={getItemLayout}
-        onScroll={onScroll}
-      />
-    </View>
+    <>
+      <View style={styles.container} testID="RetailerListScreenContainer">
+        <AnimatedSectionList
+          sections={items || []}
+          style={styles.list}
+          contentContainerStyle={styles.listContent}
+          onLayout={onLayout}
+          renderItem={renderItem}
+          renderSectionHeader={renderSectionHeader}
+          keyExtractor={keyExtractor}
+          ItemSeparatorComponent={ItemSeparator}
+          ListEmptyComponent={ListEmptyComponent}
+          ListFooterComponent={ListFooterComponent}
+          refreshControl={refreshControl}
+          scrollEventThrottle={16}
+          stickySectionHeadersEnabled
+          onEndReachedThreshold={0.1}
+          onEndReached={onEndReached}
+          getItemLayout={getItemLayout}
+          onScroll={onScroll}
+        />
+      </View>
+      <RetailerSearch />
+    </>
   );
 };

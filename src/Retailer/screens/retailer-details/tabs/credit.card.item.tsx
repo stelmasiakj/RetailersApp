@@ -6,6 +6,7 @@ import {CreditCardListItem} from '~/domain';
 import Animated, {
   Layout,
   runOnJS,
+  useAnimatedReaction,
   useAnimatedStyle,
   useSharedValue,
   withTiming,
@@ -18,6 +19,7 @@ import {deleteCreditCardThunk} from '~/Retailer/store';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {useRetailerId} from '../use.retailer.id';
 import {spacing, useApplicationTheme, useStylesheet} from '~/designSystem';
+import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
 
 const HEIGHT = 67;
 
@@ -124,6 +126,24 @@ export const CreditCardItem = memo(
         ],
       }),
       [],
+    );
+
+    const playHapticFeedback = useCallback(() => {
+      console.log('haptic: ');
+      ReactNativeHapticFeedback.trigger('impactLight');
+    }, []);
+
+    useAnimatedReaction(
+      () => panX.value,
+      (curr, prev) => {
+        if (
+          curr < -PAN_DELETE_TRESHOLD &&
+          (prev || 0) >= -PAN_DELETE_TRESHOLD
+        ) {
+          runOnJS(playHapticFeedback)();
+        }
+      },
+      [playHapticFeedback],
     );
 
     const styles = useStylesheet(
