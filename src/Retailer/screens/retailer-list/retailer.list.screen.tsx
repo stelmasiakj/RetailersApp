@@ -164,7 +164,7 @@ export const RetailerListScreen = () => {
   );
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="RetailerListScreenContainer">
       <SectionList
         sections={items || []}
         style={styles.list}

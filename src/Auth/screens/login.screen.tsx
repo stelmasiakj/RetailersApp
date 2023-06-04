@@ -158,6 +158,7 @@ export const LoginScreen = () => {
             onSubmitEditing={focusPassword}
             inputAccessoryViewID={InputAccessoryId}
             onFocus={onUsernameFocus}
+            testID="UserNameInput"
           />
 
           <FormTextField
@@ -173,6 +174,7 @@ export const LoginScreen = () => {
             ref={passwordInput}
             inputAccessoryViewID={InputAccessoryId}
             onFocus={onPasswordFocus}
+            testID="PasswordInput"
           />
 
           <Button
@@ -180,7 +182,8 @@ export const LoginScreen = () => {
             disabled={isSubmitting}
             style={styles.submit}
             mode="contained"
-            onPress={handleSubmit(onSubmit)}>
+            onPress={handleSubmit(onSubmit)}
+            testID="LoginSubmitButton">
             {t('login.signin')}
           </Button>
         </ScrollView>

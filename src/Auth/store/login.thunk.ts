@@ -5,9 +5,7 @@ import {tokenStorage} from '../storage';
 export const loginThunk = createAppAsyncThunk(
   'auth/login',
   async (args: {username: string; password: string}) => {
-    const response = (await apiClient.post('/api/login', args)).data as {
-      token: string;
-    };
+    const response = await apiClient.login(args);
 
     await tokenStorage.write(response.token);
 

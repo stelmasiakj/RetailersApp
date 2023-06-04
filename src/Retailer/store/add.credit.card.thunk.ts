@@ -1,5 +1,4 @@
 import {apiClient} from '~/api';
-import {CreditCard} from '~/domain';
 import {createAppAsyncThunk} from '~/redux/create.app.async.thunk';
 import {getRetailerCreditCardsThunk} from './get.retailer.credit.cards.thunk';
 
@@ -14,9 +13,7 @@ export const addCreditCardThunk = createAppAsyncThunk(
     },
     thunkAPI,
   ) => {
-    const response = (await apiClient.post('/api/creditcard', args)).data as {
-      card: CreditCard;
-    };
+    const response = await apiClient.addCreditCard(args);
 
     await thunkAPI.dispatch(
       getRetailerCreditCardsThunk({retailerId: args.ownerId}),
