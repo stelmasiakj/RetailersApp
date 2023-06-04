@@ -30,10 +30,10 @@ export const getTransactionsThunk = createAppAsyncThunk(
               ? filter.retailerIds.join('|')
               : null,
             minstart: filter?.minStart
-              ? new Date(filter.minStart).getTime()
+              ? getTimeOfDay(filter.minStart, 0, 0)
               : null,
             maxstart: filter?.maxStart
-              ? new Date(filter.maxStart).getTime()
+              ? getTimeOfDay(filter.maxStart, 23, 59)
               : null,
           },
           {skipNulls: true},
@@ -43,3 +43,10 @@ export const getTransactionsThunk = createAppAsyncThunk(
     return response;
   },
 );
+
+const getTimeOfDay = (v: string, hours: number, minutes: number) => {
+  const date = new Date(v);
+  date.setHours(hours);
+  date.setMinutes(minutes);
+  return date.getTime();
+};

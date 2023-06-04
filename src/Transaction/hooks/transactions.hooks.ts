@@ -131,4 +131,12 @@ export const useRetailerTransactions = (retailerId: number) => {
   return useAppSelector(selectCallback);
 };
 
-export const useTransactionsFilter = () => useAppSelector(selectFilter);
+export const useTransactionsFilter = () => {
+  return (
+    useAppSelector(selectFilter) || {
+      maxStart: null,
+      minStart: null,
+      retailerIds: [],
+    }
+  );
+};

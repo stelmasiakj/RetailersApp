@@ -183,6 +183,24 @@ const selectRetailerList = createSelector(
   },
 );
 
+const makeSelectRetailerListItem = () =>
+  createSelector(
+    (_: TRootState, id: number) => id,
+    selectRetailerListItems,
+    (id, items) => {
+      return items[id];
+    },
+  );
+
+export const useRetailerListItem = (id: number) => {
+  const select = useMemo(() => makeSelectRetailerListItem(), []);
+  const selector = useCallback(
+    (state: TRootState) => select(state, id),
+    [id, select],
+  );
+  return useAppSelector(selector);
+};
+
 export const useRetailers = () => useAppSelector(selectRetailerList);
 
 export const useRetailersSearch = () =>

@@ -59,11 +59,19 @@ const transactionStore = createSlice({
   name: 'transaction',
   initialState,
   reducers: {
-    setTransactionFilter: (
+    setTransactionFilterAction: (
       state,
       action: PayloadAction<ITransactionState['filter']>,
     ) => {
       state.filter = action.payload;
+    },
+    resetTransactionListAction: state => {
+      state.listItems = initialState.listItems;
+      state.isFetchingList = initialState.isFetchingList;
+      state.isFetchingListError = initialState.isFetchingListError;
+      state.listTotal = initialState.listTotal;
+      state.listPage = initialState.listPage;
+      state.listIds = initialState.listIds;
     },
   },
   extraReducers: builder => {
@@ -175,5 +183,8 @@ const transactionStore = createSlice({
     builder.addCase(logoutThunk.fulfilled, () => ({...initialState}));
   },
 });
+
+export const {resetTransactionListAction, setTransactionFilterAction} =
+  transactionStore.actions;
 
 export const transactionReducer = transactionStore.reducer;

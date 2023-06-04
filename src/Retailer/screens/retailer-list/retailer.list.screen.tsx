@@ -178,7 +178,7 @@ export const RetailerListScreen = () => {
         ListFooterComponent={ListFooterComponent}
         refreshControl={refreshControl}
         scrollEventThrottle={16}
-        stickySectionHeadersEnabled={false}
+        stickySectionHeadersEnabled
         onEndReachedThreshold={0.1}
         onEndReached={onEndReached}
         getItemLayout={getItemLayout}

@@ -13,6 +13,7 @@
   },
   "noData": "No data",
   "back": "Back",
+  "selectDate": "Select date",
   "profile": {
     "editProfile": "Edit profile",
     "colors": "App theme",
@@ -45,7 +46,14 @@
     "finished": "Finished",
     "title": "Transactions",
     "rejected": "Rejected",
-    "pending": "Pending"
+    "pending": "Pending",
+    "filterTitle": "Filter transactions",
+    "clearFilter": "clear",
+    "startDate": "Start date",
+    "from": "From",
+    "to": "To",
+    "retailers": "Retailers",
+    "applyFilter": "Apply filter"
   },
   "creditCard": {
     "cardNumber": "Card number",
