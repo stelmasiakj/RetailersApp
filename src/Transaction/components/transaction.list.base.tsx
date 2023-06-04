@@ -2,14 +2,16 @@ import throttle from 'lodash.throttle';
 import {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
-  FlatList,
   ListRenderItem,
   RefreshControl,
   StyleProp,
+  StyleSheet,
   View,
   ViewStyle,
 } from 'react-native';
 import {ActivityIndicator} from 'react-native-paper';
+import Animated from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TransactionListItemPresenter} from '~/Transaction/components';
 import {
   TRANSACTION_LIST_ITEM_HEIGHT,
@@ -28,6 +30,8 @@ export const TransactionListBase = memo(
     page = 1,
     loadCallback,
     contentContainerStyle,
+    topInset = 0,
+    ...props
   }: {
     areAllItemsLoaded?: boolean;
     isError: boolean;
@@ -36,6 +40,8 @@ export const TransactionListBase = memo(
     page?: number;
     loadCallback: (page: number) => Promise<unknown>;
     contentContainerStyle?: StyleProp<ViewStyle>;
+    topInset?: number;
+    onScroll?: React.ComponentProps<typeof Animated.FlatList>['onScroll'];
   }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [t] = useTranslation();
@@ -48,13 +54,14 @@ export const TransactionListBase = memo(
         },
         listContent: {
           padding: spacing[20],
+          paddingTop: spacing[20] + topInset,
           minHeight: '100%',
         },
         separator: {
           height: TRANSACTION_LIST_ITEM_SEPARATOR,
         },
       }),
-      [],
+      [topInset],
     );
 
     useEffect(() => {
@@ -98,8 +105,14 @@ export const TransactionListBase = memo(
     }, [loadCallback]);
 
     const refreshControl = useMemo(
-      () => <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />,
-      [onRefresh, isRefreshing],
+      () => (
+        <RefreshControl
+          refreshing={isRefreshing}
+          onRefresh={onRefresh}
+          progressViewOffset={topInset}
+        />
+      ),
+      [onRefresh, isRefreshing, topInset],
     );
 
     const shouldLoadMore =
@@ -127,11 +140,23 @@ export const TransactionListBase = memo(
       [styles],
     );
 
+    const targetContentContainerStyle = useMemo(
+      () => StyleSheet.flatten([styles.listContent, contentContainerStyle]),
+      [styles, contentContainerStyle],
+    );
+    const {top} = useSafeAreaInsets();
+    const scrollIndicatorInsets = useMemo(
+      () => ({
+        top: topInset - top,
+      }),
+      [topInset, top],
+    );
+
     return (
-      <FlatList
+      <Animated.FlatList
         data={items}
         style={styles.list}
-        contentContainerStyle={[styles.listContent, contentContainerStyle]}
+        contentContainerStyle={targetContentContainerStyle}
         renderItem={renderItem}
         keyExtractor={keyExtractor}
         ListEmptyComponent={ListEmptyComponent}
@@ -142,6 +167,8 @@ export const TransactionListBase = memo(
         refreshControl={refreshControl}
         scrollEventThrottle={16}
         getItemLayout={getItemLayout}
+        scrollIndicatorInsets={scrollIndicatorInsets}
+        {...props}
       />
     );
   },

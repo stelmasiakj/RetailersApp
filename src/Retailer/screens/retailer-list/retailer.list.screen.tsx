@@ -20,9 +20,25 @@ import {
   RETAILER_LIST_ITEM_SEPARATOR,
   RETAILER_LIST_SECTION_HEIGHT,
 } from '~/Retailer/constants';
-import {getSectionListLayout} from '~/utils';
-import {useCustomTabbarHeight} from '~/navigationElements';
-import Animated, {FadeIn} from 'react-native-reanimated';
+import {clampWorklet, getSectionListLayout} from '~/utils';
+import {
+  useCustomTabBarTranslate,
+  useCustomTabbarHeight,
+} from '~/navigationElements';
+import Animated, {
+  FadeIn,
+  useAnimatedScrollHandler,
+  withTiming,
+} from 'react-native-reanimated';
+import {useIsFocused} from '@react-navigation/native';
+
+const RetailersSectionList = SectionList<
+  RetailerListItem,
+  {title: string; data: RetailerListItem[]}
+>;
+
+const AnimatedSectionList =
+  Animated.createAnimatedComponent(RetailersSectionList);
 
 export const RetailerListScreen = () => {
   const dispatch = useAppDispatch();
@@ -163,9 +179,55 @@ export const RetailerListScreen = () => {
     [],
   );
 
+  const tabBarTranslateY = useCustomTabBarTranslate();
+  const isFocused = useIsFocused();
+
+  const onScroll = useAnimatedScrollHandler<{
+    prevScrollY: number;
+    clamp: number;
+
+    initialScrollY: number;
+  }>(
+    {
+      onBeginDrag: (event, ctx) => {
+        const maxAllowedScrollY =
+          event.contentSize.height - event.layoutMeasurement.height;
+        const scrollY = clampWorklet(
+          event.contentOffset.y,
+          0,
+          maxAllowedScrollY,
+        );
+
+        ctx.initialScrollY = scrollY;
+      },
+      onScroll: (event, ctx) => {
+        const maxAllowedScrollY =
+          event.contentSize.height - event.layoutMeasurement.height;
+        const scrollY = clampWorklet(
+          event.contentOffset.y,
+          0,
+          maxAllowedScrollY,
+        );
+
+        if (scrollY - ctx.initialScrollY > 30 && isFocused) {
+          tabBarTranslateY.value = withTiming(tabbarHeight);
+        } else if (scrollY - ctx.initialScrollY < -30 && isFocused) {
+          tabBarTranslateY.value = withTiming(0);
+        }
+      },
+    },
+    [tabbarHeight, isFocused],
+  );
+
+  useEffect(() => {
+    if (!isFocused) {
+      tabBarTranslateY.value = withTiming(0);
+    }
+  }, [isFocused, tabBarTranslateY]);
+
   return (
     <View style={styles.container} testID="RetailerListScreenContainer">
-      <SectionList
+      <AnimatedSectionList
         sections={items || []}
         style={styles.list}
         contentContainerStyle={styles.listContent}
@@ -182,6 +244,7 @@ export const RetailerListScreen = () => {
         onEndReachedThreshold={0.1}
         onEndReached={onEndReached}
         getItemLayout={getItemLayout}
+        onScroll={onScroll}
       />
     </View>
   );
