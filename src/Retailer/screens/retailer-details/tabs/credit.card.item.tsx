@@ -129,7 +129,6 @@ export const CreditCardItem = memo(
     );
 
     const playHapticFeedback = useCallback(() => {
-      console.log('haptic: ');
       ReactNativeHapticFeedback.trigger('impactLight');
     }, []);
 
@@ -170,7 +169,10 @@ export const CreditCardItem = memo(
 
     return (
       <>
-        <Animated.View layout={Layout.springify()} style={wrapperStyle}>
+        <Animated.View
+          layout={Layout.springify()}
+          style={wrapperStyle}
+          testID={`CreditCardItem_${id}`}>
           <View style={[StyleSheet.absoluteFill, styles.delete]}>
             <Animated.View style={iconAnimatedStyle}>
               <Icon size={40} color="white" name="delete" />

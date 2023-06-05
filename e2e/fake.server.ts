@@ -171,7 +171,11 @@ app.post('/api/creditcard', (req, res) => {
 
 app.delete('/api/creditcard/:id', (req, res) => {
   const {id} = req.params;
+  const card = fakeDB.data.creditCards.find(c => c.id !== id)!;
+  const retailer = fakeDB.data.retailers.find(r => r.id === card.retailerId)!;
+
   fakeDB.data.creditCards = fakeDB.data.creditCards.filter(c => c.id !== id);
+  retailer.creditCardIds = retailer.creditCardIds.filter(i => i !== id);
 
   res.json({deleted: true});
 });

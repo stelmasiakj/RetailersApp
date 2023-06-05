@@ -4,6 +4,7 @@ import {
   RefreshControl,
   SectionList,
   View,
+  ActivityIndicator,
 } from 'react-native';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {getRetailersThunk} from '../../store';
@@ -11,7 +12,7 @@ import {useRetailers} from '../../hooks.ts';
 import {useStylesheet} from '~/designSystem';
 import {RetailerListItem} from '~/domain';
 import throttle from 'lodash.throttle';
-import {ActivityIndicator, Text} from 'react-native-paper';
+import {Text} from 'react-native-paper';
 import {EmptyView, ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
 import {RetailerListItemPresenter, RetailerSearch} from '~/Retailer/components';
@@ -25,12 +26,13 @@ import {
   useCustomTabBarTranslate,
   useCustomTabbarHeight,
 } from '~/navigationElements';
+
+import {useIsFocused, useNavigation} from '@react-navigation/native';
 import Animated, {
   FadeIn,
   useAnimatedScrollHandler,
   withTiming,
 } from 'react-native-reanimated';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
 
 const RetailersSectionList = SectionList<
   RetailerListItem,

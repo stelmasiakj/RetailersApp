@@ -25,8 +25,21 @@ import {
 import {DarkModeContext, IDarkModeContextValues} from './designSystem';
 import {PortalProvider} from '@gorhom/portal';
 import {CustomTabBarTranslateProvider} from './navigationElements';
+import {LaunchArguments} from 'react-native-launch-arguments';
 
-startMirage();
+const isDetox = () => {
+  const launchArgs = LaunchArguments.value<{
+    detoxDisableHierarchyDump: string;
+    detoxServer: string;
+    detoxSessionId: string;
+  }>();
+
+  return !!launchArgs.detoxSessionId;
+};
+
+if (!isDetox()) {
+  startMirage();
+}
 
 const Screens = ({isSignedIn}: {isSignedIn: boolean}) => {
   useAuthorization();

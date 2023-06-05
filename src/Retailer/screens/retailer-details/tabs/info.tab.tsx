@@ -1,11 +1,11 @@
 import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
-import {ScrollView, View} from 'react-native';
+import {ActivityIndicator, ScrollView, View} from 'react-native';
 import {useRetailerId} from '../use.retailer.id';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {useRetailerDetails} from '~/Retailer/hooks.ts';
 import {getRetailerDetailsThunk} from '~/Retailer/store';
 import {spacing, useStylesheet} from '~/designSystem';
-import {ActivityIndicator, Card, List} from 'react-native-paper';
+import {Card, List} from 'react-native-paper';
 import {ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
 import {formatAddress, formatDate, formatPhoneNumber} from '~/utils';

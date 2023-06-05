@@ -101,7 +101,7 @@ export const RetailerDetailsScreen = () => {
   }, []);
 
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="RetailerDetailsScreen">
       <TabView
         navigationState={navigationState}
         onIndexChange={setTab}

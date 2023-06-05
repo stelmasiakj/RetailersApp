@@ -1,5 +1,11 @@
 import {faker} from '@faker-js/faker';
 import {by, expect, element} from 'detox';
+import {
+  expectElementToBeVisibleByText as expectElementWithTextToBeVisible,
+  goToTab,
+  login,
+  tapElementWithText,
+} from './common';
 
 describe('auth e2e tests', () => {
   it('should sign in', async () => {
@@ -14,5 +20,11 @@ describe('auth e2e tests', () => {
     await expect(element(by.id('RetailerListScreenContainer'))).toBeVisible();
   });
 
-  it('should logout', async () => {});
+  it('should logout', async () => {
+    await login();
+    await goToTab('Profile');
+    await tapElementWithText('Log out');
+
+    await expectElementWithTextToBeVisible('Sign in');
+  });
 });

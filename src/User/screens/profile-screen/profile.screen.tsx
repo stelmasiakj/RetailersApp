@@ -1,16 +1,10 @@
 import {useCallback, useEffect, useMemo, useState} from 'react';
-import {View} from 'react-native';
+import {ActivityIndicator, View} from 'react-native';
 import {logoutThunk} from '~/Auth';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {getProfileThunk} from '../../store';
 import {useDarkModeContext, useStylesheet} from '~/designSystem';
-import {
-  ActivityIndicator,
-  Avatar,
-  Divider,
-  List,
-  Text,
-} from 'react-native-paper';
+import {Avatar, Divider, List, Text} from 'react-native-paper';
 import {useProfile} from '../../hooks';
 import {AppHeader, ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
@@ -91,7 +85,7 @@ export const ProfileScreen = () => {
   return (
     <>
       <AppHeader title={t('profile.title')} />
-      <View style={styles.container}>
+      <View style={styles.container} testID="ProfileScreen">
         {!profile && isFetching && (
           <View style={styles.progress}>
             <ActivityIndicator />

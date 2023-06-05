@@ -68,8 +68,7 @@ export const RetailerSearchContent = memo(
 
     const {height: screenHeight} = useWindowDimensions();
 
-    const {bottom, top} = useSafeAreaInsets();
-    const hiddenPosition = headerHeight - (screenHeight + top + bottom);
+    const hiddenPosition = -screenHeight;
 
     const animatedStyle = useAnimatedStyle(
       () => ({
@@ -122,7 +121,9 @@ export const RetailerSearchContent = memo(
     );
 
     return (
-      <Animated.View style={[styles.container, animatedStyle]}>
+      <Animated.View
+        style={[styles.container, animatedStyle]}
+        testID="RetailerSearchContent">
         <FlatList
           data={retailers}
           keyExtractor={keyExtractor}

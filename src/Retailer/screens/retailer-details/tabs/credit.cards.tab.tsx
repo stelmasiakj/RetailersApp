@@ -1,11 +1,15 @@
 import {memo, useCallback, useEffect, useMemo, useState} from 'react';
-import {RefreshControl, ScrollView, View} from 'react-native';
+import {
+  ActivityIndicator,
+  RefreshControl,
+  ScrollView,
+  View,
+} from 'react-native';
 import {useStylesheet} from '~/designSystem';
 import {useRetailerId} from '../use.retailer.id';
 import {useRetailerCreditCards} from '~/Retailer/hooks.ts';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {EmptyView, ErrorView} from '~/components';
-import {ActivityIndicator} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
 import React from 'react';
 import {getRetailerCreditCardsThunk} from '~/Retailer/store';
@@ -57,6 +61,7 @@ export const CreditCardsTab = memo(() => {
 
   return (
     <ScrollView
+      testID="CreditCardsTab"
       refreshControl={refreshControl}
       style={styles.scroll}
       contentContainerStyle={styles.scrollContent}>

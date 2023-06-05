@@ -1,8 +1,8 @@
 import {RouteProp, useNavigation, useRoute} from '@react-navigation/native';
 import {useCallback, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
-import {View} from 'react-native';
-import {ActivityIndicator, Button, Text} from 'react-native-paper';
+import {ActivityIndicator, View} from 'react-native';
+import {Button, Text} from 'react-native-paper';
 import {SafeAreaView} from 'react-native-safe-area-context';
 import {addCreditCardThunk} from '~/Retailer/store';
 import {useStylesheet} from '~/designSystem';

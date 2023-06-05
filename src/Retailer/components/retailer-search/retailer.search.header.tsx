@@ -104,6 +104,7 @@ export const RetailerSearchHeader = memo(
             onFocus={onFocus}
             onChangeText={onChangeSearch}
             value={search}
+            testID="RetailerSearch"
           />
         </View>
       </View>

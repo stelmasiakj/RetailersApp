@@ -2,6 +2,7 @@ import throttle from 'lodash.throttle';
 import {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import {
+  ActivityIndicator,
   ListRenderItem,
   RefreshControl,
   StyleProp,
@@ -9,7 +10,6 @@ import {
   View,
   ViewStyle,
 } from 'react-native';
-import {ActivityIndicator} from 'react-native-paper';
 import Animated from 'react-native-reanimated';
 import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import {TransactionListItemPresenter} from '~/Transaction/components';

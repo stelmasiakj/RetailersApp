@@ -173,6 +173,7 @@ export const EditProfileScreen = () => {
             onSubmitEditing={focusLastName}
             onFocus={onFirsNameFocus}
             inputAccessoryViewID={InputAccessoryId}
+            testID="ProfileFirstName"
           />
           <FormTextField
             control={control}
@@ -186,6 +187,7 @@ export const EditProfileScreen = () => {
             onSubmitEditing={focusEmail}
             onFocus={onLastNameFocus}
             inputAccessoryViewID={InputAccessoryId}
+            testID="ProfileLastName"
           />
           <FormTextField
             control={control}
@@ -200,6 +202,7 @@ export const EditProfileScreen = () => {
             ref={emailInput}
             onFocus={onEmailFocus}
             inputAccessoryViewID={InputAccessoryId}
+            testID="ProfileEmail"
           />
           <View style={styles.separator} pointerEvents="box-none" />
           <Button
