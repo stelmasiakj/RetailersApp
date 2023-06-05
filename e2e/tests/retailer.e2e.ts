@@ -12,7 +12,25 @@ import {
 import {fakeDB} from '../fake.db';
 
 describe('retailers e2e tests', () => {
-  it('should see retailers on retailers list screen', async () => {});
+  it.only('should see retailers on retailers list screen', async () => {
+    const retailers = getRetailers();
+    await login();
+
+    for (const retailer of retailers) {
+      await waitFor(element(by.id(`RetailerListItem_${retailer.id}`)))
+        .toBeVisible(100)
+        .whileElement(by.id('RetailerList'))
+        .scroll(100, 'down', NaN, 0.8);
+
+      await expect(
+        element(
+          by
+            .text(`${retailer.firstName} ${retailer.lastName}`)
+            .withAncestor(by.id(`RetailerListItem_${retailer.id}`)),
+        ),
+      ).toBeVisible();
+    }
+  });
 
   it('should see retailer details on retailers details screen', async () => {
     const retailer = getRetailers()[0];

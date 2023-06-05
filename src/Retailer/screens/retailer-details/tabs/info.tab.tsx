@@ -2,7 +2,7 @@ import React, {memo, useCallback, useEffect, useMemo, useState} from 'react';
 import {ActivityIndicator, ScrollView, View} from 'react-native';
 import {useRetailerId} from '../use.retailer.id';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
-import {useRetailerDetails} from '~/Retailer/hooks.ts';
+import {useRetailerDetails} from '~/Retailer/hooks';
 import {getRetailerDetailsThunk} from '~/Retailer/store';
 import {spacing, useStylesheet} from '~/designSystem';
 import {Card, List} from 'react-native-paper';

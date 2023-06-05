@@ -19,7 +19,7 @@ import {useAppHeaderHeight} from '~/components';
 import {useStylesheet} from '~/designSystem';
 import {RetailerListItem} from '~/domain';
 import {RetailerListItemPresenter} from '../retailer.list.item.presenter';
-import {useRetailersSearch} from '~/Retailer/hooks.ts';
+import {useRetailersSearch} from '~/Retailer/hooks';
 import {RETAILER_LIST_ITEM_SEPARATOR} from '~/Retailer/constants';
 import {Text} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';

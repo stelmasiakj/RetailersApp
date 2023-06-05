@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {getRetailersThunk} from '../../store';
-import {useRetailers} from '../../hooks.ts';
+import {useRetailers} from '../../hooks';
 import {useStylesheet} from '~/designSystem';
 import {RetailerListItem} from '~/domain';
 import throttle from 'lodash.throttle';
@@ -245,6 +245,7 @@ export const RetailerListScreen = () => {
     <>
       <View style={styles.container} testID="RetailerListScreenContainer">
         <AnimatedSectionList
+          testID={'RetailerList'}
           sections={items || []}
           style={styles.list}
           contentContainerStyle={styles.listContent}

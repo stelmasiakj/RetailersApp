@@ -1,6 +1,6 @@
 import {memo, useCallback} from 'react';
 import {Chip} from 'react-native-paper';
-import {useRetailerListItem} from '~/Retailer/hooks.ts/retailer.hooks';
+import {useRetailerListItem} from '~/Retailer/hooks/retailer.hooks';
 
 export const RetailerChip = memo(
   ({id, onClose}: {id: number; onClose: (id: number) => void}) => {

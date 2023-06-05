@@ -19,7 +19,10 @@ export const RetailerListItemPresenter = memo(
     }, [id, onPress]);
 
     return (
-      <Pressable onPress={onPressed} style={styles.itemContainer}>
+      <Pressable
+        testID={`RetailerListItem_${id}`}
+        onPress={onPressed}
+        style={styles.itemContainer}>
         <Avatar.Image source={{uri: avatar}} size={40} />
         <View>
           <Text variant="bodyMedium" numberOfLines={1}>

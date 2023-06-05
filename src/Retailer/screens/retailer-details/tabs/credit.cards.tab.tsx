@@ -7,7 +7,7 @@ import {
 } from 'react-native';
 import {useStylesheet} from '~/designSystem';
 import {useRetailerId} from '../use.retailer.id';
-import {useRetailerCreditCards} from '~/Retailer/hooks.ts';
+import {useRetailerCreditCards} from '~/Retailer/hooks';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {EmptyView, ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
