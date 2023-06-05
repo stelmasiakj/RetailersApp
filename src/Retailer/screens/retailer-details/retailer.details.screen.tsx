@@ -29,7 +29,13 @@ export const RetailerDetailsScreen = () => {
   }, [navigation, retailerId]);
 
   const AddCreditCardButton = useCallback(
-    () => <Appbar.Action icon="plus" onPress={navigateToAddCreditCard} />,
+    () => (
+      <Appbar.Action
+        testID="AddCreditCardButton"
+        icon="plus"
+        onPress={navigateToAddCreditCard}
+      />
+    ),
     [navigateToAddCreditCard],
   );
 

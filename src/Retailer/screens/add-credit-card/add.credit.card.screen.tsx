@@ -151,40 +151,45 @@ export const AddCreditCardScreen = () => {
             inputAccessoryViewID={INPUT_ACCESSORY_ID}
             onFocus={onCreditCardNumberFocus}
             transform={maskCardNumber}
+            testID="CreditCardNumber"
           />
-          <View style={styles.inputsRow}>
+          <FormTextField
+            control={control}
+            errors={errors}
+            name="expiration"
+            label={t('creditCard.expiration')}
+            keyboardType="number-pad"
+            returnKeyType="next"
+            autoComplete="cc-exp"
+            onSubmitEditing={focusCV2}
+            ref={expirationInput}
+            inputAccessoryViewID={INPUT_ACCESSORY_ID}
+            onFocus={onExpirationFocus}
+            transform={maskExpiration}
+            testID="CreditCardExpiration"
+          />
+          <FormTextField
+            control={control}
+            errors={errors}
+            name="cv2"
+            label={t('creditCard.cv2')}
+            keyboardType="number-pad"
+            returnKeyType="go"
+            autoComplete="cc-csc"
+            ref={cv2Input}
+            inputAccessoryViewID={INPUT_ACCESSORY_ID}
+            onFocus={onCV2Focus}
+            transform={maskCV2}
+            testID="CreditCardCV2"
+          />
+          {/* <View style={styles.inputsRow}>
             <View style={styles.inputContainer}>
-              <FormTextField
-                control={control}
-                errors={errors}
-                name="expiration"
-                label={t('creditCard.expiration')}
-                keyboardType="number-pad"
-                returnKeyType="next"
-                autoComplete="cc-exp"
-                onSubmitEditing={focusCV2}
-                ref={expirationInput}
-                inputAccessoryViewID={INPUT_ACCESSORY_ID}
-                onFocus={onExpirationFocus}
-                transform={maskExpiration}
-              />
+              
             </View>
             <View style={styles.inputContainer}>
-              <FormTextField
-                control={control}
-                errors={errors}
-                name="cv2"
-                label={t('creditCard.cv2')}
-                keyboardType="number-pad"
-                returnKeyType="go"
-                autoComplete="cc-csc"
-                ref={cv2Input}
-                inputAccessoryViewID={INPUT_ACCESSORY_ID}
-                onFocus={onCV2Focus}
-                transform={maskCV2}
-              />
+              
             </View>
-          </View>
+          </View> */}
           <View style={styles.switchWithLabel}>
             <Text>
               {t('creditCard.acceptRegulations1')}{' '}
@@ -196,7 +201,11 @@ export const AddCreditCardScreen = () => {
               control={control}
               name="regulationsAccepted"
               render={({field: {value, onChange}}) => (
-                <Switch onValueChange={onChange} value={value} />
+                <Switch
+                  testID="AcceptRegulationsSwitch"
+                  onValueChange={onChange}
+                  value={value}
+                />
               )}
             />
           </View>

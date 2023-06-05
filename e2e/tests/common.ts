@@ -28,6 +28,10 @@ export const tapElementWithText = async (text: string) => {
   await element(by.text(text)).tap();
 };
 
+export const tapElementWithId = async (id: string) => {
+  await element(by.id(id)).tap();
+};
+
 export const getRetailers = () => {
   return fakeDB.data.retailers.sort((r1, r2) => {
     const fullName1 = `${r1.firstName} ${r1.lastName}`.toLowerCase();
