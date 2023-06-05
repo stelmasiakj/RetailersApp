@@ -32,7 +32,7 @@ describe('credit cards e2e tests', () => {
     }
   });
 
-  it.only('should add credit card', async () => {
+  it('should add credit card', async () => {
     const cardNumber = '1111 2222 3333 4444';
     const expiration = faker.phone.number('##/##');
     const cv2 = faker.phone.number('###');
