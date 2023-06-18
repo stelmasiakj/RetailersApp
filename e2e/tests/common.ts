@@ -41,6 +41,19 @@ export const getRetailers = () => {
   });
 };
 
+export const getTransactions = ({type}: {type: 'ACTIVE' | 'FINISHED'}) => {
+  return fakeDB.data.transactions
+    .filter(t =>
+      type === 'FINISHED' ? t.status === 'FINISHED' : t.status !== 'FINISHED',
+    )
+    .sort((t1, t2) => {
+      const createDate1 = new Date(t1.createDate);
+      const createDate2 = new Date(t2.createDate);
+
+      return createDate2.getTime() - createDate1.getTime();
+    });
+};
+
 export const formatDate = (v: Date | string) => {
   const date = new Date(v);
   if (isNaN(date as any)) {

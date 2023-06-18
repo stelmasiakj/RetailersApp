@@ -6,7 +6,7 @@ import {View} from 'react-native';
 import {useCallback} from 'react';
 import type {AppTabsNavigatorParams} from '~/navigation/app.tabs.navigator';
 import {CustomTabBarItem} from './custom.tab.bar.item';
-import {useCustomTabBarTranslate} from './custom.tab.bar.translate.context';
+import {useCustomTabBarTranslate} from './custom.tab.bar.hooks';
 
 export const CustomTabBar = ({
   descriptors,

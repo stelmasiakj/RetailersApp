@@ -60,7 +60,7 @@ export const TransactionList = memo(
             0,
             maxAllowedScrollY,
           );
-          const diff = scrollY - (ctx.prevScrollY || 0);
+          const diff = (scrollY - (ctx.prevScrollY || 0)) / 4;
 
           headerTranslateY.value = clampWorklet(
             headerTranslateY.value - diff,
@@ -81,6 +81,7 @@ export const TransactionList = memo(
         contentContainerStyle={styles.content}
         topInset={headerHeight}
         onScroll={onScroll}
+        testID={`TransactionList_${type}`}
       />
     );
   },

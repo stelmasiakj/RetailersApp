@@ -53,8 +53,8 @@ describe('credit cards e2e tests', () => {
   });
 
   it('should delete credit card', async () => {
-    const card = fakeDB.data.creditCards.filter(card =>
-      retailer.creditCardIds.includes(card.id),
+    const card = fakeDB.data.creditCards.filter(c =>
+      retailer.creditCardIds.includes(c.id),
     )[0];
 
     await element(by.id(`CreditCardItem_${card.id}`)).swipe('left', 'fast');

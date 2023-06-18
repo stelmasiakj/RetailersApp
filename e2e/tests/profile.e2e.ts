@@ -1,5 +1,5 @@
 import {faker} from '@faker-js/faker';
-import {by, expect, element} from 'detox';
+import {by, element} from 'detox';
 import {goToTab, login, tapElementWithText} from './common';
 import {fakeDB} from '../fake.db';
 import {expectElementToBeVisibleByText} from './common';

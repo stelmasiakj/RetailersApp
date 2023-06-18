@@ -1,11 +1,11 @@
-import React, {createContext, useContext, useMemo} from 'react';
+import React, {createContext, useMemo} from 'react';
 import Animated, {useSharedValue} from 'react-native-reanimated';
 
 interface ICustomTabBarTranslateContextValue {
   translateY: Animated.SharedValue<number>;
 }
 
-const CustomTabBarTranslateContext =
+export const CustomTabBarTranslateContext =
   createContext<ICustomTabBarTranslateContextValue>({
     translateY: null as any,
   });
@@ -25,9 +25,4 @@ export const CustomTabBarTranslateProvider = ({
       {children}
     </CustomTabBarTranslateContext.Provider>
   );
-};
-
-export const useCustomTabBarTranslate = () => {
-  const {translateY} = useContext(CustomTabBarTranslateContext);
-  return translateY;
 };

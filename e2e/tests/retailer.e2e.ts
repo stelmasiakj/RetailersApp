@@ -4,15 +4,13 @@ import {
   expectElementToBeVisibleById,
   expectElementToBeVisibleByText,
   getRetailers,
-  goToTab,
   login,
   tapElementWithText,
   formatDate,
 } from './common';
-import {fakeDB} from '../fake.db';
 
 describe('retailers e2e tests', () => {
-  it.only('should see retailers on retailers list screen', async () => {
+  it('should see retailers on retailers list screen', async () => {
     const retailers = getRetailers();
     await login();
 
@@ -68,6 +66,7 @@ async function tapSearchedRetailer({
 }
 
 async function typeRetailerSearch(search: string) {
+  await element(by.text('Search for retailer')).tap();
   await element(by.id('RetailerSearch')).typeText(search);
 }
 

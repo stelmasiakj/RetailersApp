@@ -42,6 +42,7 @@ export const TransactionListBase = memo(
     contentContainerStyle?: StyleProp<ViewStyle>;
     topInset?: number;
     onScroll?: React.ComponentProps<typeof Animated.FlatList>['onScroll'];
+    testID?: string;
   }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
     const [t] = useTranslation();

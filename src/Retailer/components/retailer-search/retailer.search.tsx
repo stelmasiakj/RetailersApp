@@ -1,33 +1,90 @@
-import {memo, useCallback, useEffect, useMemo, useRef, useState} from 'react';
-import {Portal} from '@gorhom/portal';
-import {StyleSheet, View} from 'react-native';
-import {RetailerSearchHeader} from './retailer.search.header';
-import {RetailerSearchContent} from './retailer.search.content';
-import {useIsFocused, useNavigation} from '@react-navigation/native';
+import {useApplicationTheme} from '~/designSystem';
+import {useHideTabBar, useShowTabBar} from '~/navigationElements';
+import {
+  interpolateColor,
+  runOnJS,
+  useAnimatedReaction,
+  useAnimatedStyle,
+} from 'react-native-reanimated';
+import {useCallback, useEffect, useMemo, useRef, useState} from 'react';
+import {useTransition} from '~/utils';
+import {RetailerSearchBackground} from './retailer.search.background';
+import {RetailerSearchDivider} from './retailer.search.divider';
+import {RetailerSearchBar} from './retailer.search.bar';
 import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {
   resetSearchedRetailersAction,
   searchRetailersThunk,
 } from '~/Retailer/store';
+import {useNavigation} from '@react-navigation/native';
 import debounce from 'lodash.debounce';
+import {Keyboard} from 'react-native';
+import {RetailerSearchContent} from './retailer.search.content';
 
-export const RetailerSearch = memo(() => {
-  const [isFocused, setIsFocused] = useState(false);
+export const RetailerSearch = () => {
+  const showTabbar = useShowTabBar();
+  const hideTabbar = useHideTabBar();
   const dispatch = useAppDispatch();
   const [search, setSearch] = useState('');
   const searchPromise = useRef<{abort: (reason?: string) => void}>();
 
-  const focus = useCallback(() => {
-    dispatch(resetSearchedRetailersAction());
-    setIsFocused(true);
-  }, [dispatch]);
+  const [isOpened, setIsOpened] = useState(false);
+  const [inputMode, setInputMode] = useState<'input' | 'sudo'>('sudo');
+  const openTransition = useTransition(isOpened);
 
-  const blur = useCallback(() => {
-    dispatch(resetSearchedRetailersAction());
-    setIsFocused(false);
-  }, [dispatch]);
+  useAnimatedReaction(
+    () => openTransition.value,
+    (curr, prev) => {
+      if (curr === 1 && (prev || 0) < 1) {
+        runOnJS(setInputMode)('input');
+      } else if (curr === 0 && (prev || 0) > 0) {
+        runOnJS(setInputMode)('sudo');
+      }
+    },
+    [],
+  );
 
-  const isNavigationFocused = useIsFocused();
+  const open = useCallback(() => {
+    dispatch(resetSearchedRetailersAction());
+    hideTabbar();
+    setIsOpened(true);
+  }, [hideTabbar, dispatch]);
+
+  const close = useCallback(() => {
+    dispatch(resetSearchedRetailersAction());
+    showTabbar();
+    setIsOpened(false);
+  }, [showTabbar, dispatch]);
+
+  const navigation = useNavigation();
+  const navigateToRetailerDetails = useCallback(
+    (id: number) => {
+      Keyboard.dismiss();
+      close();
+      navigation.navigate('AppTabs', {
+        screen: 'Retailer',
+        params: {screen: 'RetailerDetails', params: {id}},
+      });
+    },
+    [navigation, close],
+  );
+
+  const {
+    colors: {
+      background: openedBackground,
+      elevation: {level2: notOpenedBackground},
+    },
+  } = useApplicationTheme();
+
+  const backroundColorAnimatedStyle = useAnimatedStyle(() => {
+    return {
+      backgroundColor: interpolateColor(
+        openTransition.value,
+        [0, 1],
+        [notOpenedBackground, openedBackground],
+      ),
+    };
+  }, [openedBackground, notOpenedBackground]);
 
   const searchCore = useMemo(
     () =>
@@ -47,48 +104,35 @@ export const RetailerSearch = memo(() => {
       searchPromise.current?.abort();
       searchCore(value);
     },
-    [dispatch, searchCore],
+    [searchCore],
   );
 
   useEffect(() => {
-    if (!isFocused) {
+    if (!isOpened) {
       setSearch('');
     }
-  }, [isFocused]);
-
-  const navigation = useNavigation();
-  const navigateToRetailerDetails = useCallback(
-    (id: number) => {
-      blur();
-      navigation.navigate('AppTabs', {
-        screen: 'Retailer',
-        params: {screen: 'RetailerDetails', params: {id}},
-      });
-    },
-    [navigation, blur],
-  );
-
-  if (!isNavigationFocused) {
-    return null;
-  }
+  }, [isOpened]);
 
   return (
-    <Portal>
-      <View
-        style={StyleSheet.absoluteFillObject}
-        pointerEvents={isFocused ? 'auto' : 'box-none'}>
-        <RetailerSearchContent
-          isFocused={isFocused}
-          onRetailerPressed={navigateToRetailerDetails}
-        />
-        <RetailerSearchHeader
-          isFocused={isFocused}
-          onFocus={focus}
-          onBlur={blur}
-          search={search}
-          onChangeSearch={onSearch}
-        />
-      </View>
-    </Portal>
+    <>
+      <RetailerSearchBar
+        inputMode={inputMode}
+        onClose={close}
+        onOpen={open}
+        style={backroundColorAnimatedStyle}
+        openTransition={openTransition}
+        value={search}
+        onChangeText={onSearch}
+      />
+
+      <RetailerSearchBackground
+        openTransition={openTransition}
+        style={backroundColorAnimatedStyle}
+      />
+      <RetailerSearchDivider openTransition={openTransition} />
+      {isOpened && (
+        <RetailerSearchContent onRetailerPressed={navigateToRetailerDetails} />
+      )}
+    </>
   );
-});
+};

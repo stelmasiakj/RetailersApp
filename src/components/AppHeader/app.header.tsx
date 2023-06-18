@@ -1,6 +1,7 @@
 import {useNavigation} from '@react-navigation/native';
 import {StyleSheet} from 'react-native';
 import {Appbar} from 'react-native-paper';
+import {APP_HEADER_HEIGHT} from './app.header.constants';
 
 export const AppHeader = ({
   title,
@@ -24,7 +25,6 @@ export const AppHeader = ({
       {left === 'close' && (
         <Appbar.Action icon={'close'} onPress={navigation.goBack} />
       )}
-      {/* {left === 'back' && } */}
       {left === 'back' && <Appbar.BackAction onPress={navigation.goBack} />}
       {!!left && typeof left !== 'string' && left}
 
@@ -36,6 +36,6 @@ export const AppHeader = ({
 };
 
 const styles = StyleSheet.create({
-  header: {height: 40},
+  header: {height: APP_HEADER_HEIGHT},
   title: {fontSize: 16, fontWeight: '700'},
 });

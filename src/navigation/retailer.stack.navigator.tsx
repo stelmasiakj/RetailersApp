@@ -26,7 +26,7 @@ export const RetailerStackNavigator = () => {
       <Stack.Screen
         name="RetailerList"
         component={RetailerListScreen}
-        options={{title: '', headerTitle: ''}}
+        options={{headerShown: false}}
       />
       <Stack.Screen
         name="RetailerDetails"

@@ -10,7 +10,7 @@ import {formatDatetime} from '~/utils';
 
 export const TransactionListItemPresenter = memo(
   ({
-    item: {amount, status, retailerFirstName, retailerLastName, createDate},
+    item: {amount, status, retailerFirstName, retailerLastName, createDate, id},
   }: {
     item: TransactionListItem;
   }) => {
@@ -60,11 +60,8 @@ export const TransactionListItemPresenter = memo(
     }, [status, t]);
 
     return (
-      <Animated.View entering={FadeIn}>
+      <Animated.View entering={FadeIn} testID={`TransactionListItem_${id}`}>
         <Surface mode="elevated" style={styles.container}>
-          {/* <Text>
-          {amount} {status} {retailerFirstName} {retailerLastName} {createDate}
-        </Text> */}
           <View style={styles.row}>
             <Text variant="bodyMedium">
               {retailerFirstName} {retailerLastName}

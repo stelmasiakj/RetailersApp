@@ -15,7 +15,11 @@ import throttle from 'lodash.throttle';
 import {Text} from 'react-native-paper';
 import {EmptyView, ErrorView} from '~/components';
 import {useTranslation} from 'react-i18next';
-import {RetailerListItemPresenter, RetailerSearch} from '~/Retailer/components';
+import {
+  RETAILER_SEARCH_BAR_HEIGHT,
+  RetailerListItemPresenter,
+  RetailerSearch,
+} from '~/Retailer/components';
 import {
   RETAILER_LIST_ITEM_PRESENTER_HEIGHT,
   RETAILER_LIST_ITEM_SEPARATOR,
@@ -33,6 +37,7 @@ import Animated, {
   useAnimatedScrollHandler,
   withTiming,
 } from 'react-native-reanimated';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
 
 const RetailersSectionList = SectionList<
   RetailerListItem,
@@ -48,21 +53,19 @@ export const RetailerListScreen = () => {
   const [isRefreshing, setIsRefreshing] = useState(false);
   const {areAllItemsLoaded, isError, isFetching, items, page} = useRetailers();
   const [t] = useTranslation();
+  const {top} = useSafeAreaInsets();
 
   const tabbarHeight = useCustomTabbarHeight();
   const styles = useStylesheet(
     ({colors, spacing}) => ({
-      container: {
-        flex: 1,
-        backgroundColor: colors.background,
-      },
       list: {
         flex: 1,
+        backgroundColor: colors.background,
       },
       listContent: {
         padding: spacing[20],
         paddingBottom: spacing[20] + tabbarHeight,
-        paddingTop: 0,
+        paddingTop: top + 2 * spacing[20] + RETAILER_SEARCH_BAR_HEIGHT,
         minHeight: height,
       },
       separator: {
@@ -73,8 +76,17 @@ export const RetailerListScreen = () => {
         backgroundColor: colors.surface,
         justifyContent: 'center',
       },
+      statusBar: {
+        height: top,
+        backgroundColor: colors.background,
+        opacity: 0.9,
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+      },
     }),
-    [height, tabbarHeight],
+    [height, tabbarHeight, top],
   );
 
   useEffect(() => {
@@ -242,30 +254,28 @@ export const RetailerListScreen = () => {
   }, [isFocused, tabBarTranslateY]);
 
   return (
-    <>
-      <View style={styles.container} testID="RetailerListScreenContainer">
-        <AnimatedSectionList
-          testID={'RetailerList'}
-          sections={items || []}
-          style={styles.list}
-          contentContainerStyle={styles.listContent}
-          onLayout={onLayout}
-          renderItem={renderItem}
-          renderSectionHeader={renderSectionHeader}
-          keyExtractor={keyExtractor}
-          ItemSeparatorComponent={ItemSeparator}
-          ListEmptyComponent={ListEmptyComponent}
-          ListFooterComponent={ListFooterComponent}
-          refreshControl={refreshControl}
-          scrollEventThrottle={16}
-          stickySectionHeadersEnabled
-          onEndReachedThreshold={0.1}
-          onEndReached={onEndReached}
-          getItemLayout={getItemLayout}
-          onScroll={onScroll}
-        />
-      </View>
+    <View style={styles.list} testID="RetailerListScreenContainer">
+      <AnimatedSectionList
+        testID={'RetailerList'}
+        sections={items || []}
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
+        onLayout={onLayout}
+        renderItem={renderItem}
+        renderSectionHeader={renderSectionHeader}
+        keyExtractor={keyExtractor}
+        ItemSeparatorComponent={ItemSeparator}
+        ListEmptyComponent={ListEmptyComponent}
+        ListFooterComponent={ListFooterComponent}
+        refreshControl={refreshControl}
+        scrollEventThrottle={16}
+        stickySectionHeadersEnabled={false}
+        onEndReachedThreshold={0.1}
+        onEndReached={onEndReached}
+        getItemLayout={getItemLayout}
+        onScroll={onScroll}
+      />
       <RetailerSearch />
-    </>
+    </View>
   );
 };

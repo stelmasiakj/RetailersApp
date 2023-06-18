@@ -1,21 +1,6 @@
-import {memo, useCallback, useEffect} from 'react';
-import {
-  FlatList,
-  ListRenderItem,
-  StyleSheet,
-  View,
-  useWindowDimensions,
-} from 'react-native';
-import Animated, {
-  FadeIn,
-  FadeOut,
-  interpolate,
-  useAnimatedStyle,
-  useSharedValue,
-  withTiming,
-} from 'react-native-reanimated';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
-import {useAppHeaderHeight} from '~/components';
+import {memo, useCallback} from 'react';
+import {FlatList, ListRenderItem, View} from 'react-native';
+import Animated, {FadeIn, FadeOut} from 'react-native-reanimated';
 import {useStylesheet} from '~/designSystem';
 import {RetailerListItem} from '~/domain';
 import {RetailerListItemPresenter} from '../retailer.list.item.presenter';
@@ -23,33 +8,24 @@ import {useRetailersSearch} from '~/Retailer/hooks';
 import {RETAILER_LIST_ITEM_SEPARATOR} from '~/Retailer/constants';
 import {Text} from 'react-native-paper';
 import {useTranslation} from 'react-i18next';
+import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {
+  RETAILER_SEARCH_BAR_MARGIN,
+  RETAILER_SEARCH_BAR_HEIGHT,
+} from './constants';
 
 export const RetailerSearchContent = memo(
-  ({
-    isFocused,
-    onRetailerPressed,
-  }: {
-    isFocused: boolean;
-    onRetailerPressed: (id: number) => void;
-  }) => {
-    const focusTransition = useSharedValue(isFocused ? 1 : 0);
+  ({onRetailerPressed}: {onRetailerPressed: (id: number) => void}) => {
+    const {top} = useSafeAreaInsets();
 
-    useEffect(() => {
-      focusTransition.value = withTiming(isFocused ? 1 : 0);
-    }, [focusTransition, isFocused]);
-
-    const headerHeight = useAppHeaderHeight();
     const styles = useStylesheet(
-      ({colors, spacing}) => ({
-        container: {
-          backgroundColor: colors.background,
-          ...StyleSheet.absoluteFillObject,
-          top: headerHeight,
-          borderTopColor: colors.onBackground,
-          borderTopWidth: StyleSheet.hairlineWidth,
-        },
+      ({spacing}) => ({
         list: {
-          flex: 1,
+          position: 'absolute',
+          left: 0,
+          right: 0,
+          bottom: 0,
+          top: top + RETAILER_SEARCH_BAR_MARGIN + RETAILER_SEARCH_BAR_HEIGHT,
         },
         listContent: {
           padding: spacing[20],
@@ -63,26 +39,7 @@ export const RetailerSearchContent = memo(
           textAlign: 'center',
         },
       }),
-      [headerHeight],
-    );
-
-    const {height: screenHeight} = useWindowDimensions();
-
-    const hiddenPosition = -screenHeight;
-
-    const animatedStyle = useAnimatedStyle(
-      () => ({
-        transform: [
-          {
-            translateY: interpolate(
-              focusTransition.value,
-              [0, 1],
-              [hiddenPosition, 0],
-            ),
-          },
-        ],
-      }),
-      [hiddenPosition],
+      [top],
     );
 
     const renderItem: ListRenderItem<RetailerListItem> = useCallback(
@@ -121,20 +78,17 @@ export const RetailerSearchContent = memo(
     );
 
     return (
-      <Animated.View
-        style={[styles.container, animatedStyle]}
-        testID="RetailerSearchContent">
-        <FlatList
-          data={retailers}
-          keyExtractor={keyExtractor}
-          renderItem={renderItem}
-          style={styles.list}
-          contentContainerStyle={styles.listContent}
-          ItemSeparatorComponent={ItemSeparator}
-          ListEmptyComponent={ListEmpty}
-          keyboardShouldPersistTaps="handled"
-        />
-      </Animated.View>
+      <FlatList
+        testID="RetailerSearchContent"
+        data={retailers}
+        keyExtractor={keyExtractor}
+        renderItem={renderItem}
+        style={styles.list}
+        contentContainerStyle={styles.listContent}
+        ItemSeparatorComponent={ItemSeparator}
+        ListEmptyComponent={ListEmpty}
+        keyboardShouldPersistTaps="handled"
+      />
     );
   },
 );
