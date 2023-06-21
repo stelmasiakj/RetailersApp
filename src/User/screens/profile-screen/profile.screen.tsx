@@ -65,7 +65,7 @@ export const ProfileScreen = () => {
         textAlign: 'center',
       },
     }),
-    [],
+    [tabbarHeight],
   );
 
   const avatarText = useMemo(() => {

@@ -6,3 +6,4 @@ export * from './FormTextField';
 export * from './AppInputAccessoryView';
 export * from './AppHeader';
 export * from './DatePicker';
+export * from './BottomSheet';

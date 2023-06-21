@@ -1,6 +1,12 @@
 import {BottomSheetBackdropProps} from '@gorhom/bottom-sheet';
 import {memo, useMemo} from 'react';
-import {StyleProp, ViewStyle, ViewProps} from 'react-native';
+import {
+  StyleProp,
+  ViewStyle,
+  ViewProps,
+  Pressable,
+  StyleSheet,
+} from 'react-native';
 import Animated, {
   useAnimatedStyle,
   interpolate,
@@ -8,7 +14,11 @@ import Animated, {
 } from 'react-native-reanimated';
 
 export const BottomSheetBackdrop = memo(
-  ({style, animatedIndex}: BottomSheetBackdropProps) => {
+  ({
+    style,
+    animatedIndex,
+    onPress,
+  }: BottomSheetBackdropProps & {onPress: () => void}) => {
     const animatedStyle = useAnimatedStyle(() => {
       return {
         opacity: interpolate(animatedIndex.value, [-1, 0], [0, 0.7]),
@@ -27,7 +37,9 @@ export const BottomSheetBackdrop = memo(
     }, []);
 
     return (
-      <Animated.View style={containerStyle} animatedProps={animatedProps} />
+      <Animated.View style={containerStyle} animatedProps={animatedProps}>
+        <Pressable style={StyleSheet.absoluteFillObject} onPress={onPress} />
+      </Animated.View>
     );
   },
 );

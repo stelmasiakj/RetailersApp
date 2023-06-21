@@ -27,6 +27,7 @@
   "close": "close",
   "cancel": "Cancel",
   "confirm": "Confirm",
+  "delete": "Delete",
   "done": "Done",
   "dark": "Dark",
   "save": "Save",
@@ -56,7 +57,8 @@
     "from": "From",
     "to": "To",
     "retailers": "Retailers",
-    "applyFilter": "Apply filter"
+    "applyFilter": "Apply filter",
+    "markAsFinished": "Mark as finished"
   },
   "creditCard": {
     "cardNumber": "Card number",

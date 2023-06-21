@@ -5,6 +5,7 @@ import React from 'react';
 import {CreditCardListItem} from '~/domain';
 import Animated, {
   Layout,
+  interpolateColor,
   runOnJS,
   useAnimatedReaction,
   useAnimatedStyle,
@@ -20,6 +21,7 @@ import {useAppDispatch} from '~/redux/use.app.dispatch';
 import {useRetailerId} from '../use.retailer.id';
 import {spacing, useApplicationTheme, useStylesheet} from '~/designSystem';
 import ReactNativeHapticFeedback from 'react-native-haptic-feedback';
+import {OptionsBottomSheet} from '~/components/OptionsBottomSheet/options.bottom.sheet';
 
 const HEIGHT = 67;
 
@@ -41,10 +43,34 @@ export const CreditCardItem = memo(
       );
     const panX = useSharedValue(0);
     const startPanX = useSharedValue(0);
+    const isPressedIn = useSharedValue(0);
     const [isHiddenTemporarily, setIsHiddenTemporarily] = useState(false);
     const [isDeleteDialogVisible, setIsDeleteDialogVisible] = useState(false);
     const dispatch = useAppDispatch();
     const retailerId = useRetailerId();
+    const {
+      colors: {
+        background,
+        elevation: {level2},
+      },
+    } = useApplicationTheme();
+    const [isOptionsBottomSheetVisible, setIsOptionsBottomSheetVisible] =
+      useState(false);
+
+    const hideOptionsBottomSheet = useCallback(
+      () => setIsOptionsBottomSheetVisible(false),
+      [],
+    );
+
+    const showOptionsBottomSheet = useCallback(() => {
+      ReactNativeHapticFeedback.trigger('impactHeavy');
+      setIsOptionsBottomSheetVisible(true);
+    }, []);
+
+    const options = useMemo(
+      () => [{id: 'DELETE', label: t('delete'), icon: 'delete'}],
+      [t],
+    );
 
     const showDeleteDialog = useCallback(
       () => setIsDeleteDialogVisible(true),
@@ -86,12 +112,13 @@ export const CreditCardItem = memo(
       restoreHiddenTemporarily();
     }, [hideDeleteDialog, restoreHiddenTemporarily]);
 
-    const onDeleteSwipe = useCallback(() => {
+    const onDeleteRequested = useCallback(() => {
       showDeleteDialog();
       hideTemporarily();
-    }, [showDeleteDialog, hideTemporarily]);
+      hideOptionsBottomSheet();
+    }, [showDeleteDialog, hideTemporarily, hideOptionsBottomSheet]);
 
-    const gesture = Gesture.Pan()
+    const panGesture = Gesture.Pan()
       .onStart(() => {
         startPanX.value = panX.value;
       })
@@ -102,7 +129,7 @@ export const CreditCardItem = memo(
         if (panX.value < -PAN_DELETE_TRESHOLD) {
           panX.value = withTiming(-screenWidth, undefined, done => {
             if (done) {
-              runOnJS(onDeleteSwipe)();
+              runOnJS(onDeleteRequested)();
             }
           });
         } else {
@@ -110,11 +137,29 @@ export const CreditCardItem = memo(
         }
       });
 
+    const longPressGesture = Gesture.LongPress()
+      .minDuration(1000)
+      .onStart(() => {})
+      .onBegin(() => {
+        isPressedIn.value = withTiming(1);
+      })
+      .onStart(() => {
+        runOnJS(showOptionsBottomSheet)();
+      })
+      .onFinalize(() => {
+        isPressedIn.value = withTiming(0);
+      });
+
     const cardAnimatedStyle = useAnimatedStyle(
       () => ({
         transform: [{translateX: panX.value}],
+        backgroundColor: interpolateColor(
+          isPressedIn.value,
+          [0, 1],
+          [background, level2],
+        ),
       }),
-      [],
+      [level2, background],
     );
 
     const iconAnimatedStyle = useAnimatedStyle(
@@ -129,7 +174,7 @@ export const CreditCardItem = memo(
     );
 
     const playHapticFeedback = useCallback(() => {
-      ReactNativeHapticFeedback.trigger('impactLight');
+      ReactNativeHapticFeedback.trigger('impactMedium');
     }, []);
 
     useAnimatedReaction(
@@ -178,7 +223,7 @@ export const CreditCardItem = memo(
               <Icon size={40} color="white" name="delete" />
             </Animated.View>
           </View>
-          <GestureDetector gesture={gesture}>
+          <GestureDetector gesture={Gesture.Race(panGesture, longPressGesture)}>
             <Animated.View style={[styles.card, cardAnimatedStyle]}>
               <List.Item
                 left={left}
@@ -208,6 +253,12 @@ export const CreditCardItem = memo(
             </Dialog.Actions>
           </Dialog>
         </Portal>
+        <OptionsBottomSheet
+          isVisible={isOptionsBottomSheetVisible}
+          onClose={hideOptionsBottomSheet}
+          onOptionPress={onDeleteRequested}
+          options={options}
+        />
       </>
     );
   },

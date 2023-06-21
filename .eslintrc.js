@@ -7,5 +7,11 @@ module.exports = {
     'react/jsx-boolean-value': 1,
     'no-empty-pattern': 1,
     'no-console': 'warn',
+    'react-hooks/exhaustive-deps': [
+      'warn',
+      {
+        additionalHooks: '(useStylesheet)',
+      },
+    ],
   },
 };

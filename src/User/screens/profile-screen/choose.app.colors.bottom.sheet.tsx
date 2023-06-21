@@ -1,12 +1,10 @@
-import BottomSheet from '@gorhom/bottom-sheet';
-import {useCallback, useEffect, useMemo, useRef} from 'react';
-import {BottomSheetHandle} from './bottom.sheet.handle';
+import {useCallback} from 'react';
 import {useTranslation} from 'react-i18next';
-import {BottomSheetBackdrop} from './bottom.sheet.backdrop';
-import {View} from 'react-native';
-import {useDarkModeContext, useStylesheet} from '~/designSystem';
+import {StyleSheet, View} from 'react-native';
+import {spacing, useDarkModeContext} from '~/designSystem';
 import {Portal} from '@gorhom/portal';
 import {Divider, List} from 'react-native-paper';
+import {BottomSheet} from '~/components';
 
 export const ChooseAppColorsBottomSheet = ({
   isVisible,
@@ -16,8 +14,6 @@ export const ChooseAppColorsBottomSheet = ({
   onClose: () => void;
 }) => {
   const [t] = useTranslation();
-  const bottomSheetRef = useRef<BottomSheet>(null);
-  const snapPoints = useMemo(() => [300], []);
   const {isDarkMode, setIsDarkMode} = useDarkModeContext();
 
   const setLightMode = useCallback(() => {
@@ -30,59 +26,13 @@ export const ChooseAppColorsBottomSheet = ({
     setIsDarkMode(true);
   }, [onClose, setIsDarkMode]);
 
-  useEffect(() => {
-    if (isVisible) {
-      bottomSheetRef.current?.snapToIndex(0);
-    } else {
-      bottomSheetRef.current?.close();
-    }
-  }, [isVisible]);
-
-  const onChange = useCallback(
-    (index: number) => {
-      if (index === -1) {
-        onClose();
-      }
-    },
-    [onClose],
-  );
-
-  const renderCustomHandle = useCallback(
-    () => (
-      <BottomSheetHandle title={t('profile.chooseColors')} onClose={onClose} />
-    ),
-    [t, onClose],
-  );
-
-  const styles = useStylesheet(
-    ({colors, spacing}) => ({
-      background: {
-        backgroundColor: colors.background,
-        borderRadius: spacing[8],
-      },
-      content: {
-        marginTop: spacing[32],
-      },
-    }),
-    [],
-  );
-
   const chosenIcon = useCallback(() => {
     return <List.Icon icon="check" />;
   }, []);
 
   return (
     <Portal>
-      <BottomSheet
-        ref={bottomSheetRef}
-        keyboardBlurBehavior="restore"
-        snapPoints={snapPoints}
-        enablePanDownToClose
-        onChange={onChange}
-        index={-1}
-        backdropComponent={BottomSheetBackdrop}
-        handleComponent={renderCustomHandle}
-        backgroundStyle={styles.background}>
+      <BottomSheet height={200} isVisible={isVisible} onClose={onClose}>
         <View style={styles.content}>
           <List.Item
             onPress={setLightMode}
@@ -100,3 +50,9 @@ export const ChooseAppColorsBottomSheet = ({
     </Portal>
   );
 };
+
+const styles = StyleSheet.create({
+  content: {
+    marginTop: spacing[32],
+  },
+});
