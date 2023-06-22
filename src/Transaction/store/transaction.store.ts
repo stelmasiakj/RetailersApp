@@ -3,6 +3,8 @@ import {logoutThunk} from '~/Auth';
 import {TransactionListItem} from '~/domain';
 import {getTransactionsThunk} from './get.transactions.thunk';
 import {getRetailerTransactionsThunk} from './get.retailer.transactions.thunk';
+import {markTransactionAsFinishedThunk} from './mark.transaction.as.finished.thunk';
+import {TRANSACTION_LIST_PAGE_SIZE} from '../constants';
 
 type Dict<T> = Record<number, T | undefined>;
 
@@ -30,12 +32,12 @@ interface ITransactionState {
 const initialState: ITransactionState = {
   filter: null,
   listPage: {
-    ACTIVE: 0,
-    FINISHED: 0,
+    ACTIVE: 1,
+    FINISHED: 1,
   },
   isFetchingList: {
-    ACTIVE: false,
-    FINISHED: false,
+    ACTIVE: true,
+    FINISHED: true,
   },
   isFetchingListError: {
     ACTIVE: false,
@@ -179,6 +181,26 @@ const transactionStore = createSlice({
           state.retailerTransactions[retailerId] = transactions.map(i => i.id);
         },
       );
+
+    builder.addCase(
+      markTransactionAsFinishedThunk.fulfilled,
+      (
+        state,
+        {
+          meta: {
+            arg: {id},
+          },
+        },
+      ) => {
+        const prevCount = state.listIds.ACTIVE!.length;
+        state.listTotal.ACTIVE = state.listTotal.ACTIVE! - 1;
+        state.listIds.ACTIVE = state.listIds.ACTIVE!.filter(i => i !== id);
+
+        if (prevCount % TRANSACTION_LIST_PAGE_SIZE === 1) {
+          state.listPage.ACTIVE = state.listPage.ACTIVE! - 1;
+        }
+      },
+    );
 
     builder.addCase(logoutThunk.fulfilled, () => ({...initialState}));
   },

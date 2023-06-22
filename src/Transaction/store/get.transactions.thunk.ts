@@ -1,7 +1,6 @@
 import {apiClient} from '~/api';
 import {createAppAsyncThunk} from '~/redux/create.app.async.thunk';
-
-const PAGE_SIZE = 20;
+import {TRANSACTION_LIST_PAGE_SIZE} from '../constants';
 
 export const getTransactionsThunk = createAppAsyncThunk(
   'transactions/get',
@@ -16,7 +15,7 @@ export const getTransactionsThunk = createAppAsyncThunk(
     const response = await apiClient.getTransactions({
       filter,
       page,
-      pageSize: PAGE_SIZE,
+      pageSize: TRANSACTION_LIST_PAGE_SIZE,
       type,
     });
 

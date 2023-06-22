@@ -1,20 +1,31 @@
-import {memo, useCallback, useMemo, useState} from 'react';
+import {memo, useCallback, useMemo} from 'react';
 import {spacing, useStylesheet} from '~/designSystem';
 import {TransactionListItem} from '~/domain';
 import {TRANSACTION_LIST_ITEM_HEIGHT} from '../constants';
 import {Pressable, View} from 'react-native';
 import {Chip, Surface, Text} from 'react-native-paper';
-import Animated, {FadeIn} from 'react-native-reanimated';
+import Animated, {FadeIn, LightSpeedOutRight} from 'react-native-reanimated';
 import {useTranslation} from 'react-i18next';
 import {formatDatetime} from '~/utils';
-import {OptionsBottomSheet} from '~/components/OptionsBottomSheet/options.bottom.sheet';
 
 export const TransactionListItemPresenter = memo(
   ({
-    item: {amount, status, retailerFirstName, retailerLastName, createDate, id},
+    item,
+    onOptions,
+    index,
   }: {
     item: TransactionListItem;
+    index: number;
+    onOptions?: (item: TransactionListItem, index: number) => void;
   }) => {
+    const {
+      amount,
+      status,
+      retailerFirstName,
+      retailerLastName,
+      createDate,
+      id,
+    } = item;
     const [t] = useTranslation();
     const styles = useStylesheet(
       ({colors}) => ({
@@ -49,30 +60,11 @@ export const TransactionListItemPresenter = memo(
       [status],
     );
 
-    const [isOptionsBottomSheetVisible, setIsOptionsBottomSheetVisible] =
-      useState(false);
-
-    const options = useMemo(
-      () => [
-        {id: 'DELETE', label: t('transactions.markAsFinished'), icon: 'cash'},
-      ],
-      [t],
-    );
-
-    const hideOptionsBottomSheet = useCallback(
-      () => setIsOptionsBottomSheetVisible(false),
-      [],
-    );
-
-    const showOptionsBottomSheet = useCallback(() => {
+    const onOptionsCore = useCallback(() => {
       if (status !== 'FINISHED') {
-        setIsOptionsBottomSheetVisible(true);
+        onOptions?.(item, index);
       }
-    }, [status]);
-
-    const markAsFinished = useCallback(() => {
-      hideOptionsBottomSheet();
-    }, [hideOptionsBottomSheet]);
+    }, [onOptions, index, item, status]);
 
     const statusText = useMemo(() => {
       switch (status) {
@@ -87,8 +79,11 @@ export const TransactionListItemPresenter = memo(
 
     return (
       <>
-        <Animated.View entering={FadeIn} testID={`TransactionListItem_${id}`}>
-          <Pressable onPress={showOptionsBottomSheet}>
+        <Animated.View
+          entering={FadeIn}
+          exiting={LightSpeedOutRight}
+          testID={`TransactionListItem_${id}`}>
+          <Pressable onPress={onOptionsCore}>
             <Surface mode="elevated" style={styles.container}>
               <View style={styles.row}>
                 <Text variant="bodyMedium">
@@ -105,12 +100,6 @@ export const TransactionListItemPresenter = memo(
             </Surface>
           </Pressable>
         </Animated.View>
-        <OptionsBottomSheet
-          isVisible={isOptionsBottomSheetVisible}
-          onClose={hideOptionsBottomSheet}
-          onOptionPress={markAsFinished}
-          options={options}
-        />
       </>
     );
   },

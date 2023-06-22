@@ -130,6 +130,13 @@ export const apiClient = {
     ).data as {total: number; transactions: TransactionListItem[]};
     return response;
   },
+
+  markTransactionAsFinished: async ({id}: {id: number}) => {
+    const response = (
+      await axiosInstance.patch(`/api/transactions/markasfinished/${id}`)
+    ).data as {updated: true};
+    return response;
+  },
 };
 
 const getTimeOfDay = (v: string, hours: number, minutes: number) => {

@@ -76,4 +76,21 @@ export function transactionRoutes(server: Server) {
       total,
     };
   });
+
+  server.patch(
+    '/transactions/markasfinished/:id',
+    (schema: AppSchema, request) => {
+      const {id} = request.params;
+      const transaction = schema.find('transaction', id);
+
+      if (!transaction) {
+        throw new Error(`transaction with id ${id} not found`);
+      }
+
+      transaction.update({status: 'FINISHED'});
+
+      return {updated: true};
+    },
+    {timing: 50},
+  );
 }
