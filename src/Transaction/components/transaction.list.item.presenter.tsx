@@ -83,7 +83,7 @@ export const TransactionListItemPresenter = memo(
           entering={FadeIn}
           exiting={LightSpeedOutRight}
           testID={`TransactionListItem_${id}`}>
-          <Pressable onPress={onOptionsCore}>
+          <Pressable onPress={onOptionsCore} testID="Pressable">
             <Surface mode="elevated" style={styles.container}>
               <View style={styles.row}>
                 <Text variant="bodyMedium">
@@ -93,7 +93,11 @@ export const TransactionListItemPresenter = memo(
               </View>
               <View style={styles.row}>
                 <Text variant="bodySmall">{formatDatetime(createDate)}</Text>
-                <Chip style={styles.chip} textStyle={styles.chipText} elevated>
+                <Chip
+                  testID="StatusChip"
+                  style={styles.chip}
+                  textStyle={styles.chipText}
+                  elevated>
                   {statusText}
                 </Chip>
               </View>
