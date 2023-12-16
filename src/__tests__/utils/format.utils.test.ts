@@ -4,7 +4,7 @@ import {
   formatAddress,
   formatDatetime,
   formatPhoneNumber,
-} from '../utils/format.utils';
+} from '../../utils/format.utils';
 
 describe('format utils', () => {
   it('should format date', () => {

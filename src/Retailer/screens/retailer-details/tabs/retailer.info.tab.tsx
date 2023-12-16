@@ -20,7 +20,7 @@ const Info = memo(
   },
 );
 
-export const InfoTab = memo(() => {
+export const RetailerInfoTab = memo(() => {
   const id = useRetailerId();
   const {details, isError, isFetching} = useRetailerDetails(id);
   const dispatch = useAppDispatch();

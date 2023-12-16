@@ -1,16 +1,23 @@
-// Import Jest Native matchers
 import '@testing-library/jest-native/extend-expect';
+import mockSafeAreaContext from 'react-native-safe-area-context/jest/mock';
 
-// Silence the warning: Animated: `useNativeDriver` is not supported because the native animated module is missing
+jest.mock('@gorhom/bottom-sheet', () => ({
+  __esModule: true,
+  ...require('@gorhom/bottom-sheet/mock'),
+}));
+
+jest.mock('react-native-safe-area-context', () => mockSafeAreaContext);
+
 jest.mock('react-native/Libraries/Animated/NativeAnimatedHelper');
 
 jest.mock('react-native-keychain', () => ({
   SECURITY_LEVEL_ANY: 'MOCK_SECURITY_LEVEL_ANY',
   SECURITY_LEVEL_SECURE_SOFTWARE: 'MOCK_SECURITY_LEVEL_SECURE_SOFTWARE',
   SECURITY_LEVEL_SECURE_HARDWARE: 'MOCK_SECURITY_LEVEL_SECURE_HARDWARE',
-  setGenericPassword: jest.fn().mockResolvedValue(null),
-  getGenericPassword: jest.fn().mockResolvedValue(null),
-  resetGenericPassword: jest.fn().mockResolvedValue(null),
+  setGenericPassword: jest.fn(),
+  getGenericPassword: jest.fn(),
+  resetGenericPassword: jest.fn(),
+  getAllGenericPasswordServices: jest.fn(),
 }));
 
 jest.mock('@react-native-async-storage/async-storage', () =>
@@ -25,8 +32,8 @@ jest.mock('react-native-reanimated', () =>
 jest.mock('react-i18next', () => ({
   // this mock makes sure any components using the translate hook can use it without a warning being shown
   useTranslation: () => {
-    const t = (str: any) => str;
-    const result: any = [t];
+    const t = str => str;
+    const result = [t];
     result.t = t;
     return result;
   },

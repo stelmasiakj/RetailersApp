@@ -1,4 +1,4 @@
-import {memo, useCallback} from 'react';
+import {memo, useCallback, useMemo} from 'react';
 import {StyleSheet, View} from 'react-native';
 import {RetailerListItem} from '~/domain';
 import {RETAILER_LIST_ITEM_PRESENTER_HEIGHT} from '../constants';
@@ -18,10 +18,16 @@ export const RetailerListItemPresenter = memo(
       onPress(id);
     }, [id, onPress]);
 
+    const testID = useMemo(() => `RetailerListItem_${id}`, []);
+
     return (
-      <TouchableRipple onPress={onPressed}>
-        <View testID={`RetailerListItem_${id}`} style={styles.itemContainer}>
-          <Avatar.Image source={{uri: avatar}} size={40} />
+      <TouchableRipple testID={testID} onPress={onPressed}>
+        <View style={styles.itemContainer}>
+          <Avatar.Image
+            testID={`${testID}_Image`}
+            source={{uri: avatar}}
+            size={40}
+          />
           <View>
             <Text variant="bodyMedium" numberOfLines={1}>
               {firstName} {lastName}

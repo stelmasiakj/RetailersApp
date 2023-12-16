@@ -40,7 +40,7 @@ const FormTextFieldInner = <T extends FieldValues>(
             error={!!errorMessage}
             {...props}
           />
-          <HelperText type="error" visible>
+          <HelperText type="error" visible testID={`${props.testID}_Message`}>
             {errorMessage || ''}
           </HelperText>
         </>

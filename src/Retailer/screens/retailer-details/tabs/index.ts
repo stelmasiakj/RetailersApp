@@ -1,3 +1,3 @@
-export * from './credit.cards.tab';
-export * from './info.tab';
-export * from './transactions.tab';
+export * from './retailer.credit.cards.tab';
+export * from './retailer.info.tab';
+export * from './retailer.transactions.tab';

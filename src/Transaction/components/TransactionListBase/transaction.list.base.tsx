@@ -120,7 +120,9 @@ export const TransactionListBase = memo(
       if (areAllItemsLoaded || isError) {
         return null;
       } else {
-        return <ActivityIndicator />;
+        return (
+          <ActivityIndicator testID="TransactionListBaseActivityIndicator" />
+        );
       }
     }, [areAllItemsLoaded, isError]);
 
@@ -241,7 +243,6 @@ export const TransactionListBase = memo(
           scrollEventThrottle={16}
           getItemLayout={getItemLayout}
           scrollIndicatorInsets={scrollIndicatorInsets}
-          initialNumToRender={6}
           {...props}
         />
         <OptionsBottomSheet

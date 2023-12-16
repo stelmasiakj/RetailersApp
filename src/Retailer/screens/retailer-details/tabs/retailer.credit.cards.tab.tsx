@@ -15,7 +15,7 @@ import React from 'react';
 import {getRetailerCreditCardsThunk} from '~/Retailer/store';
 import {CreditCardItem} from './credit.card.item';
 
-export const CreditCardsTab = memo(() => {
+export const RetailerCreditCardsTab = memo(() => {
   const styles = useStylesheet(
     ({colors, spacing}) => ({
       scroll: {
@@ -55,7 +55,13 @@ export const CreditCardsTab = memo(() => {
   }, [fetchCards]);
 
   const refreshControl = useMemo(
-    () => <RefreshControl refreshing={isRefreshing} onRefresh={onRefresh} />,
+    () => (
+      <RefreshControl
+        testID="RetailerCreditCardsTabActivityIndicator"
+        refreshing={isRefreshing}
+        onRefresh={onRefresh}
+      />
+    ),
     [onRefresh, isRefreshing],
   );
 
@@ -67,7 +73,7 @@ export const CreditCardsTab = memo(() => {
       contentContainerStyle={styles.scrollContent}>
       {!cards && isFetching && (
         <View style={styles.centered}>
-          <ActivityIndicator />
+          <ActivityIndicator testID="RetailerCreditCardsTabActivityIndicator" />
         </View>
       )}
       {!cards && isError && <ErrorView />}

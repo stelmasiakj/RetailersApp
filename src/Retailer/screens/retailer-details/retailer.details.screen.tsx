@@ -4,7 +4,11 @@ import {View, useWindowDimensions} from 'react-native';
 import {TabView} from 'react-native-tab-view';
 import {AppTabBar} from '~/components';
 import {useStylesheet} from '~/designSystem';
-import {CreditCardsTab, InfoTab, TransactionsTab} from './tabs';
+import {
+  RetailerCreditCardsTab,
+  RetailerInfoTab,
+  RetailerTransactionsTab,
+} from './tabs';
 import {useCustomTabbarHeight} from '~/navigationElements';
 import {useNavigation} from '@react-navigation/native';
 import {Appbar} from 'react-native-paper';
@@ -92,11 +96,11 @@ export const RetailerDetailsScreen = () => {
       const sceneTab: RetailerDetailsTab = parseInt(route.key, 10);
       switch (sceneTab) {
         case RetailerDetailsTab.Info:
-          return <InfoTab />;
+          return <RetailerInfoTab />;
         case RetailerDetailsTab.CreditCards:
-          return <CreditCardsTab />;
+          return <RetailerCreditCardsTab />;
         case RetailerDetailsTab.Transactions:
-          return <TransactionsTab />;
+          return <RetailerTransactionsTab />;
       }
     }, []);
 

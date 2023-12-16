@@ -6,7 +6,7 @@ const makeStore = (preloadedState: any = undefined) => {
   return configureStore({
     reducer: rootReducer,
     middleware: getDefaultMiddleware =>
-      getDefaultMiddleware({}).concat(getAdditionalMiddlewares()),
+      getDefaultMiddleware().concat(getAdditionalMiddlewares()),
     preloadedState,
   });
 };

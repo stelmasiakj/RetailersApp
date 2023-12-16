@@ -1,4 +1,4 @@
-import {RouteProp, useRoute} from '@react-navigation/native';
+import {type RouteProp, useRoute} from '@react-navigation/native';
 import type {RetailerStackNavigatorParams} from '~/navigation/retailer.stack.navigator';
 
 export const useRetailerId = () => {

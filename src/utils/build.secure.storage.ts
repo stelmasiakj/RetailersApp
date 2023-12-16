@@ -1,4 +1,9 @@
-import Keychain from 'react-native-keychain';
+import {
+  getAllGenericPasswordServices,
+  resetGenericPassword,
+  getGenericPassword,
+  setGenericPassword,
+} from 'react-native-keychain';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const KEYCHAIN_SALT_AS_KEY = 'KEYCHAIN_SALT';
@@ -22,33 +27,35 @@ const getKeychainKeySalt = async () => {
 };
 
 const clearKeychain = async () => {
-  const services = await Keychain.getAllGenericPasswordServices();
+  const services = await getAllGenericPasswordServices();
   for (let service of services) {
-    await Keychain.resetGenericPassword({service});
+    await resetGenericPassword({service});
   }
 };
 
 const getKeychainKey = async (key: string) => {
   const salt = await getKeychainKeySalt();
+
   return `${key}_${salt}`;
 };
 
 const writeSecure = async (key: string, value: string) => {
   const keychainKey = await getKeychainKey(key);
+
   if (!value) {
     if (await readSecure(keychainKey)) {
       await clearSecure(keychainKey);
     }
     return;
   }
-  await Keychain.setGenericPassword(KEYCHAIN_USERNAME, value, {
+  await setGenericPassword(KEYCHAIN_USERNAME, value, {
     service: keychainKey,
   });
 };
 
 const readSecure = async (key: string) => {
   const keychainKey = await getKeychainKey(key);
-  const result = await Keychain.getGenericPassword({service: keychainKey});
+  const result = await getGenericPassword({service: keychainKey});
   if (result) {
     return result.password;
   }
@@ -57,7 +64,7 @@ const readSecure = async (key: string) => {
 
 const clearSecure = async (key: string) => {
   const keychainKey = await getKeychainKey(key);
-  await Keychain.resetGenericPassword({service: keychainKey});
+  await resetGenericPassword({service: keychainKey});
 };
 
 export const buildSecureStorage = (key: string) => ({

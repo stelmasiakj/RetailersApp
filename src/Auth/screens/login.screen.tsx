@@ -188,7 +188,10 @@ export const LoginScreen = () => {
           </Button>
         </ScrollView>
       </KeyboardAvoidingView>
-      <Snackbar visible={isErrorVisible} onDismiss={hideError}>
+      <Snackbar
+        testID="LoginScreenErrorSnackbar"
+        visible={isErrorVisible}
+        onDismiss={hideError}>
         {t('errors.errorOccured')}
       </Snackbar>
       <AppInputAccessoryView
